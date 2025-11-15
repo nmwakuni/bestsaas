@@ -20,6 +20,11 @@ model User {
   emailVerified Boolean   @default(false)
   name          String?
   image         String?
+
+  // RBAC
+  roleId        String?
+  role          Role?     @relation(fields: [roleId], references: [id])
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -68,6 +73,47 @@ model VerificationToken {
 }
 
 // ============================================
+// RBAC (Role-Based Access Control)
+// ============================================
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique // "HEAD_TEACHER", "DEPUTY", "TEACHER", "BURSAR", "PARENT"
+  description String?
+
+  users       User[]
+  permissions RolePermission[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  name        String   @unique // "students.create", "fees.view", "payments.delete"
+  description String?
+  module      String   // "students", "fees", "payments", etc.
+  action      String   // "create", "read", "update", "delete"
+
+  roles       RolePermission[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RolePermission {
+  id           String     @id @default(cuid())
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime   @default(now())
+
+  @@unique([roleId, permissionId])
+}
+
+// ============================================
 // SCHOOL CORE MODELS
 // ============================================
 
@@ -89,6 +135,12 @@ model School {
   subscriptionStatus  String @default("TRIAL") // TRIAL, ACTIVE, SUSPENDED, CANCELLED
   subscriptionEndsAt  DateTime?
 
+  // Multi-Campus
+  isHeadOffice    Boolean  @default(true)
+  parentSchoolId  String?
+  parentSchool    School?  @relation("SchoolCampuses", fields: [parentSchoolId], references: [id])
+  campuses        School[] @relation("SchoolCampuses")
+
   // Relations
   students        Student[]
   staff           Staff[]
@@ -97,6 +149,9 @@ model School {
   academicYears   AcademicYear[]
   payments        Payment[]
   messages        Message[]
+  events          Event[]
+  admissions      Admission[]
+  mealPlans       MealPlan[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -149,6 +204,7 @@ model Class {
   students        Student[]
   classTeacher    Staff?   @relation(fields: [classTeacherId], references: [id])
   classTeacherId  String?
+  timetable       TimetableSlot[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -194,6 +250,9 @@ model Student {
   feeRecords      FeeRecord[]
   payments        Payment[]
   attendance      Attendance[]
+  grades          Grade[]
+  assessments     Assessment[]
+  reportCards     ReportCard[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -253,6 +312,8 @@ model Staff {
   userId          String?  @unique // Link to auth user
   user            User?    @relation(fields: [userId], references: [id])
   classesAsTeacher Class[]
+  subjects        SubjectTeacher[]
+  timetableSlots  TimetableSlot[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -379,6 +440,280 @@ model Attendance {
   @@unique([studentId, date])
   @@index([studentId])
   @@index([date])
+}
+
+// ============================================
+// ACADEMICS (CBC & GRADEBOOK)
+// ============================================
+
+model Subject {
+  id              String   @id @default(cuid())
+  name            String   // "Mathematics", "English", etc.
+  code            String?  // "MATH101"
+  description     String?
+
+  // CBC Learning Areas
+  learningArea    String?  // "Literacy Activities", "Mathematical Activities"
+
+  teachers        SubjectTeacher[]
+  grades          Grade[]
+  assessments     Assessment[]
+  timetableSlots  TimetableSlot[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([name])
+}
+
+model SubjectTeacher {
+  id              String   @id @default(cuid())
+  subjectId       String
+  subject         Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  staffId         String
+  staff           Staff    @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  grade           String?  // Which grade this teacher teaches this subject
+
+  createdAt       DateTime @default(now())
+
+  @@unique([subjectId, staffId, grade])
+}
+
+model Grade {
+  id              String   @id @default(cuid())
+  studentId       String
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subjectId       String
+  subject         Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  academicYear    String
+  term            Int
+  assessmentType  String   // "CAT", "EXAM", "ASSIGNMENT"
+  score           Decimal  @db.Decimal(5, 2)
+  maxScore        Decimal  @db.Decimal(5, 2) @default(100)
+  percentage      Decimal  @db.Decimal(5, 2)
+
+  grade           String?  // "A", "B", "C", etc.
+  remarks         String?
+
+  enteredBy       String?  // Staff ID
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([subjectId])
+}
+
+// CBC Assessment
+model Assessment {
+  id              String   @id @default(cuid())
+  studentId       String
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subjectId       String
+  subject         Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  academicYear    String
+  term            Int
+
+  // CBC Specific
+  strand          String?  // "Number Operations", "Geometry", etc.
+  learningOutcome String?
+  competencyLevel String   // "Exceeds", "Meets", "Approaches", "Below"
+
+  remarks         String?
+
+  assessedBy      String?  // Staff ID
+  assessedAt      DateTime @default(now())
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([studentId])
+}
+
+// CBC Report Cards
+model ReportCard {
+  id              String   @id @default(cuid())
+  studentId       String
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  academicYear    String
+  term            Int
+
+  // CBC Competencies (1-5 scale or descriptive)
+  communication   String?
+  collaboration   String?
+  criticalThinking String?
+  creativity      String?
+  citizenship     String?
+  learning        String?
+  selfEfficacy    String?
+
+  // Values
+  values          String?  @db.Text // JSON of values assessment
+
+  // Overall remarks
+  classTeacherRemarks String? @db.Text
+  headTeacherRemarks  String? @db.Text
+
+  generatedAt     DateTime?
+  publishedAt     DateTime?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([studentId, academicYear, term])
+}
+
+// ============================================
+// TIMETABLE
+// ============================================
+
+model TimetableSlot {
+  id              String   @id @default(cuid())
+  classId         String
+  class           Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subjectId       String
+  subject         Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  staffId         String
+  staff           Staff    @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  dayOfWeek       Int      // 1-5 (Monday-Friday)
+  startTime       String   // "08:00"
+  endTime         String   // "09:00"
+  room            String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([classId])
+  @@index([staffId])
+}
+
+// ============================================
+// EVENTS & CALENDAR
+// ============================================
+
+model Event {
+  id              String   @id @default(cuid())
+  schoolId        String
+  school          School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  title           String
+  description     String?  @db.Text
+  type            String   // "EXAM", "SPORTS_DAY", "HOLIDAY", "MEETING", "PARENT_MEETING"
+
+  startDate       DateTime
+  endDate         DateTime
+  allDay          Boolean  @default(false)
+
+  location        String?
+  organizer       String?  // Staff ID
+
+  // Who can see this
+  visibleTo       String   @default("ALL") // "ALL", "STAFF", "PARENTS", "STUDENTS"
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([schoolId])
+  @@index([startDate])
+}
+
+// ============================================
+// ONLINE ADMISSIONS
+// ============================================
+
+model Admission {
+  id              String   @id @default(cuid())
+  schoolId        String
+  school          School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  // Application Info
+  applicationNumber String @unique
+  grade           String   // Applying for which grade
+  academicYear    String
+
+  // Student Info
+  firstName       String
+  middleName      String?
+  lastName        String
+  dateOfBirth     DateTime
+  gender          String
+  birthCertNumber String?
+
+  // Parent Info
+  parentFirstName String
+  parentLastName  String
+  parentPhone     String
+  parentEmail     String?
+  parentNationalId String?
+  address         String?
+
+  // Documents (URLs to uploaded files)
+  birthCertUrl    String?
+  reportCardUrl   String?
+  photoUrl        String?
+
+  // Application Status
+  status          String   @default("PENDING") // PENDING, APPROVED, REJECTED, WAITLIST
+  reviewedBy      String?  // Staff ID
+  reviewedAt      DateTime?
+  rejectionReason String?
+
+  // Payment
+  applicationFee  Decimal? @db.Decimal(10, 2)
+  paymentStatus   String   @default("UNPAID") // UNPAID, PAID
+  mpesaReceipt    String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([schoolId])
+  @@index([status])
+}
+
+// ============================================
+// MEAL PLANNING (Boarding Schools)
+// ============================================
+
+model MealPlan {
+  id              String   @id @default(cuid())
+  schoolId        String
+  school          School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  name            String   // "Week 1 Menu", "December Menu"
+  weekNumber      Int?
+  startDate       DateTime
+  endDate         DateTime
+
+  meals           Meal[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([schoolId])
+}
+
+model Meal {
+  id              String   @id @default(cuid())
+  mealPlanId      String
+  mealPlan        MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+
+  dayOfWeek       Int      // 1-7 (Monday-Sunday)
+  mealType        String   // "BREAKFAST", "LUNCH", "DINNER", "SNACK"
+  menuItems       String   @db.Text // JSON array of menu items
+
+  // Dietary Info
+  vegetarian      Boolean  @default(false)
+  allergens       String?  // "nuts, dairy, gluten"
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([mealPlanId])
 }
 
 // ============================================
