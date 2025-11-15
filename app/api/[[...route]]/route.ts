@@ -10,6 +10,8 @@ import mpesaRouter from "./routes/mpesa";
 import messagesRouter from "./routes/messages";
 import dashboardRouter from "./routes/dashboard";
 import parentRouter from "./routes/parent";
+import importRouter from "./routes/import";
+import pdfRouter from "./routes/pdf";
 
 export const runtime = "nodejs";
 
@@ -36,6 +38,8 @@ app.route("/mpesa", mpesaRouter);
 app.route("/messages", messagesRouter);
 app.route("/dashboard", dashboardRouter);
 app.route("/parent", parentRouter);
+app.route("/import", importRouter);
+app.route("/pdf", pdfRouter);
 
 // Error handling
 app.onError((err, c) => {
