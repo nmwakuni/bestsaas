@@ -231,8 +231,8 @@ async function main() {
   // Create fee records for students
   for (const student of students) {
     const totalAmount = feeStructure.feeItems
-      .filter((item) => !item.isOptional)
-      .reduce((sum, item) => sum + Number(item.amount), 0);
+      .filter((item: any) => !item.isOptional)
+      .reduce((sum: number, item: any) => sum + Number(item.amount), 0);
 
     await prisma.feeRecord.create({
       data: {

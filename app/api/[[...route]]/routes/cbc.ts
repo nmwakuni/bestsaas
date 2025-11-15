@@ -326,7 +326,7 @@ app.get("/assessments/class/:classId", async (c) => {
       select: { id: true },
     });
 
-    const studentIds = students.map((s) => s.id);
+    const studentIds = students.map((s: any) => s.id);
 
     const where: any = {
       studentId: { in: studentIds },

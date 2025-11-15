@@ -11,10 +11,10 @@ app.post("/send", async (c) => {
     const { schoolId, recipients, message, channel, sentBy } = body;
 
     const at = getAfricasTalkingService();
-    const phoneNumbers = recipients.map((r: any) => r.phone);
+    const phoneNumbers = recipients.map((r: { phone: string }) => r.phone);
 
     // Send via Africa's Talking
-    let response;
+    let response: any;
     if (channel === "SMS") {
       response = await at.sendBulkSMS(phoneNumbers, message);
     } else if (channel === "WHATSAPP") {
@@ -26,7 +26,7 @@ app.post("/send", async (c) => {
 
     // Create message records in database
     const messages = await Promise.all(
-      recipients.map((recipient: any, index: number) => {
+      recipients.map((recipient: { phone: string; type: string; id: string }, index: number) => {
         const atRecipient = response?.SMSMessageData?.Recipients?.[index];
 
         return db.message.create({
@@ -86,7 +86,7 @@ app.post("/fee-reminders", async (c) => {
     const at = getAfricasTalkingService();
     const messages = [];
     const phoneNumbers: string[] = [];
-    const messageMap = new Map<string, any>();
+    const messageMap = new Map<string, { student: any; parent: any; record: any }>();
 
     // Collect all recipients
     for (const record of defaulters) {
@@ -106,7 +106,7 @@ app.post("/fee-reminders", async (c) => {
     // Send SMS via Africa's Talking in bulk
     if (phoneNumbers.length > 0) {
       try {
-        for (const [phone, data] of messageMap.entries()) {
+        for (const [phone, data] of Array.from(messageMap.entries())) {
           const { student, parent, record } = data;
 
           // Send individual SMS for personalized messages

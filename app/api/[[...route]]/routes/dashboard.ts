@@ -232,7 +232,7 @@ app.get("/payment-trends", async (c) => {
     });
 
     // Group by date
-    const grouped = payments.reduce((acc: any, payment) => {
+    const grouped = payments.reduce((acc: any, payment: any) => {
       const date = new Date(payment.createdAt).toISOString().split("T")[0];
       if (!acc[date]) {
         acc[date] = {

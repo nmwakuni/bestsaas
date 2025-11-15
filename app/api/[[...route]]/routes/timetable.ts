@@ -209,7 +209,13 @@ app.get("/slots", async (c) => {
   try {
     const { classId, teacherId, academicYear, term, dayOfWeek } = c.req.query();
 
-    const where: any = {};
+    const where: {
+      classId?: string;
+      teacherId?: string;
+      academicYear?: string;
+      term?: number;
+      dayOfWeek?: string;
+    } = {};
     if (classId) where.classId = classId;
     if (teacherId) where.teacherId = teacherId;
     if (academicYear) where.academicYear = academicYear;
@@ -297,7 +303,7 @@ app.put("/slots/:id", async (c) => {
 
     // Check for conflicts (excluding current slot)
     const conflicts = await checkConflicts(updateData);
-    const filteredConflicts = conflicts.filter((c: any) => c.slot.id !== id);
+    const filteredConflicts = conflicts.filter((c: { type: string; message: string; slot: { id: string } }) => c.slot.id !== id);
 
     if (filteredConflicts.length > 0) {
       return c.json(
@@ -369,7 +375,11 @@ app.get("/class/:classId", async (c) => {
     const { classId } = c.req.param();
     const { academicYear, term } = c.req.query();
 
-    const where: any = { classId };
+    const where: {
+      classId: string;
+      academicYear?: string;
+      term?: number;
+    } = { classId };
     if (academicYear) where.academicYear = academicYear;
     if (term) where.term = parseInt(term);
 
@@ -392,18 +402,19 @@ app.get("/class/:classId", async (c) => {
     });
 
     // Group by day
-    const timetableByDay = {
-      Monday: [] as any[],
-      Tuesday: [] as any[],
-      Wednesday: [] as any[],
-      Thursday: [] as any[],
-      Friday: [] as any[],
-      Saturday: [] as any[],
-      Sunday: [] as any[],
+    type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+    const timetableByDay: Record<DayOfWeek, typeof slots> = {
+      Monday: [],
+      Tuesday: [],
+      Wednesday: [],
+      Thursday: [],
+      Friday: [],
+      Saturday: [],
+      Sunday: [],
     };
 
-    slots.forEach((slot) => {
-      timetableByDay[slot.dayOfWeek].push(slot);
+    slots.forEach((slot: any) => {
+      timetableByDay[slot.dayOfWeek as DayOfWeek].push(slot);
     });
 
     return c.json({
@@ -424,7 +435,11 @@ app.get("/teacher/:teacherId", async (c) => {
     const { teacherId } = c.req.param();
     const { academicYear, term } = c.req.query();
 
-    const where: any = { teacherId };
+    const where: {
+      teacherId: string;
+      academicYear?: string;
+      term?: number;
+    } = { teacherId };
     if (academicYear) where.academicYear = academicYear;
     if (term) where.term = parseInt(term);
 
@@ -441,18 +456,19 @@ app.get("/teacher/:teacherId", async (c) => {
     });
 
     // Group by day
-    const timetableByDay = {
-      Monday: [] as any[],
-      Tuesday: [] as any[],
-      Wednesday: [] as any[],
-      Thursday: [] as any[],
-      Friday: [] as any[],
-      Saturday: [] as any[],
-      Sunday: [] as any[],
+    type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+    const timetableByDay: Record<DayOfWeek, typeof slots> = {
+      Monday: [],
+      Tuesday: [],
+      Wednesday: [],
+      Thursday: [],
+      Friday: [],
+      Saturday: [],
+      Sunday: [],
     };
 
-    slots.forEach((slot) => {
-      timetableByDay[slot.dayOfWeek].push(slot);
+    slots.forEach((slot: any) => {
+      timetableByDay[slot.dayOfWeek as DayOfWeek].push(slot);
     });
 
     return c.json({
@@ -495,7 +511,11 @@ app.delete("/class/:classId", async (c) => {
     const { classId } = c.req.param();
     const { academicYear, term } = c.req.query();
 
-    const where: any = { classId };
+    const where: {
+      classId: string;
+      academicYear?: string;
+      term?: number;
+    } = { classId };
     if (academicYear) where.academicYear = academicYear;
     if (term) where.term = parseInt(term);
 
@@ -526,9 +546,13 @@ app.get("/statistics/:schoolId", async (c) => {
       select: { id: true },
     });
 
-    const classIds = classes.map((c) => c.id);
+    const classIds = classes.map((c: any) => c.id);
 
-    const where: any = {
+    const where: {
+      classId: { in: string[] };
+      academicYear?: string;
+      term?: number;
+    } = {
       classId: { in: classIds },
     };
     if (academicYear) where.academicYear = academicYear;
@@ -544,13 +568,13 @@ app.get("/statistics/:schoolId", async (c) => {
 
     // Calculate statistics
     const totalSlots = slots.length;
-    const uniqueTeachers = new Set(slots.map((s) => s.teacherId)).size;
-    const uniqueClasses = new Set(slots.map((s) => s.classId)).size;
-    const slotsByDay = slots.reduce((acc: any, slot) => {
+    const uniqueTeachers = new Set(slots.map((s: any) => s.teacherId)).size;
+    const uniqueClasses = new Set(slots.map((s: any) => s.classId)).size;
+    const slotsByDay = slots.reduce((acc: Record<string, number>, slot: any) => {
       if (!acc[slot.dayOfWeek]) acc[slot.dayOfWeek] = 0;
       acc[slot.dayOfWeek]++;
       return acc;
-    }, {});
+    }, {} as Record<string, number>);
 
     return c.json({
       success: true,

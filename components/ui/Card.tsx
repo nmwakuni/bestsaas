@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, HTMLAttributes } from "react";
 
-interface CardProps {
+interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   children: ReactNode;
   className?: string;
   padding?: "none" | "sm" | "md" | "lg";
 }
 
-export function Card({ children, className, padding = "md" }: CardProps) {
+export function Card({ children, className, padding = "md", onClick, ...props }: CardProps) {
   const paddingStyles = {
     none: "",
     sm: "p-4",
@@ -16,7 +16,16 @@ export function Card({ children, className, padding = "md" }: CardProps) {
   };
 
   return (
-    <div className={cn("bg-white rounded-xl shadow-md", paddingStyles[padding], className)}>
+    <div
+      className={cn(
+        "bg-white rounded-xl shadow-md",
+        paddingStyles[padding],
+        onClick && "cursor-pointer hover:shadow-lg transition-shadow",
+        className
+      )}
+      onClick={onClick}
+      {...props}
+    >
       {children}
     </div>
   );

@@ -52,11 +52,17 @@ app.get("/enrollment/:schoolId", async (c) => {
     });
 
     // Group by class and gender
-    const enrollmentByClass: any = {};
-    const genderStats = { Male: 0, Female: 0, Other: 0 };
-    const ageDistribution: any = {};
+    const enrollmentByClass: Record<string, {
+      total: number;
+      male: number;
+      female: number;
+      boarders: number;
+      dayScholars: number;
+    }> = {};
+    const genderStats: Record<string, number> = { Male: 0, Female: 0, Other: 0 };
+    const ageDistribution: Record<number, number> = {};
 
-    students.forEach((student) => {
+    students.forEach((student: any) => {
       const className = student.class.name;
 
       if (!enrollmentByClass[className]) {
@@ -70,7 +76,7 @@ app.get("/enrollment/:schoolId", async (c) => {
       }
 
       enrollmentByClass[className].total++;
-      enrollmentByClass[className][student.gender.toLowerCase()]++;
+      enrollmentByClass[className][student.gender.toLowerCase() as 'male' | 'female']++;
 
       if (student.boardingStatus === "Boarder") {
         enrollmentByClass[className].boarders++;
@@ -79,11 +85,15 @@ app.get("/enrollment/:schoolId", async (c) => {
       }
 
       // Gender stats
-      genderStats[student.gender]++;
+      if (student.gender in genderStats) {
+        genderStats[student.gender]++;
+      }
 
       // Age distribution
       const age = new Date().getFullYear() - new Date(student.dateOfBirth).getFullYear();
-      if (!ageDistribution[age]) ageDistribution[age] = 0;
+      if (!ageDistribution[age]) {
+        ageDistribution[age] = 0;
+      }
       ageDistribution[age]++;
     });
 
@@ -103,7 +113,7 @@ app.get("/enrollment/:schoolId", async (c) => {
         byClass: enrollmentByClass,
         ageDistribution,
       },
-      students: students.map((s) => ({
+      students: students.map((s: any) => ({
         admissionNumber: s.admissionNumber,
         firstName: s.firstName,
         lastName: s.lastName,
@@ -154,17 +164,17 @@ app.get("/teachers/:schoolId", async (c) => {
     });
 
     // Calculate statistics
-    const genderStats = { Male: 0, Female: 0, Other: 0 };
-    const qualifications: any = {};
-    const subjectCoverage: any = {};
+    const genderStats: Record<string, number> = { Male: 0, Female: 0, Other: 0 };
+    const qualifications: Record<string, number> = {};
+    const subjectCoverage: Record<string, number> = {};
 
-    teachers.forEach((teacher) => {
-      if (teacher.gender) {
+    teachers.forEach((teacher: any) => {
+      if (teacher.gender && teacher.gender in genderStats) {
         genderStats[teacher.gender]++;
       }
 
       // Track subjects taught
-      teacher.subjectTeachers.forEach((st) => {
+      teacher.subjectTeachers.forEach((st: any) => {
         if (!subjectCoverage[st.subject.name]) {
           subjectCoverage[st.subject.name] = 0;
         }
@@ -187,13 +197,13 @@ app.get("/teachers/:schoolId", async (c) => {
         subjectCoverage,
         studentTeacherRatio: 0, // Can be calculated if needed
       },
-      teachers: teachers.map((t) => ({
+      teachers: teachers.map((t: any) => ({
         tscNumber: t.tscNumber || "N/A",
         firstName: t.firstName,
         lastName: t.lastName,
         email: t.email,
         gender: t.gender,
-        subjects: t.subjectTeachers.map((st) => st.subject.name),
+        subjects: t.subjectTeachers.map((st: any) => st.subject.name),
       })),
     };
 
@@ -235,8 +245,8 @@ app.get("/academic-performance/:schoolId", async (c) => {
       },
     });
 
-    const classIds = classes.map((c) => c.id);
-    const studentIds = classes.flatMap((c) => c.students.map((s) => s.id));
+    const classIds = classes.map((c: any) => c.id);
+    const studentIds = classes.flatMap((c: any) => c.students.map((s: any) => s.id));
 
     // Get grades for this term
     const grades = await db.grade.findMany({
@@ -256,10 +266,20 @@ app.get("/academic-performance/:schoolId", async (c) => {
     });
 
     // Calculate performance by subject
-    const subjectPerformance: any = {};
-    const classPerformance: any = {};
+    const subjectPerformance: Record<string, {
+      total: number;
+      sum: number;
+      high: number;
+      low: number;
+      average?: number;
+    }> = {};
+    const classPerformance: Record<string, {
+      total: number;
+      sum: number;
+      average?: number;
+    }> = {};
 
-    grades.forEach((grade) => {
+    grades.forEach((grade: any) => {
       const subjectName = grade.subject.name;
       const className = grade.student.class.name;
       const percentage = (grade.score / grade.maxScore) * 100;
@@ -296,12 +316,12 @@ app.get("/academic-performance/:schoolId", async (c) => {
     });
 
     // Calculate averages
-    Object.keys(subjectPerformance).forEach((subject) => {
+    Object.keys(subjectPerformance).forEach((subject: string) => {
       const stats = subjectPerformance[subject];
       stats.average = stats.sum / stats.total;
     });
 
-    Object.keys(classPerformance).forEach((className) => {
+    Object.keys(classPerformance).forEach((className: string) => {
       const stats = classPerformance[className];
       stats.average = stats.sum / stats.total;
     });
@@ -372,8 +392,8 @@ app.get("/infrastructure/:schoolId", async (c) => {
     });
 
     const rooms = timetableSlots
-      .map((slot) => slot.room)
-      .filter((room) => room !== null && room !== undefined);
+      .map((slot: any) => slot.room)
+      .filter((room: any) => room !== null && room !== undefined);
 
     const report = {
       reportType: "NEMIS Infrastructure Report",
@@ -387,9 +407,9 @@ app.get("/infrastructure/:schoolId", async (c) => {
       infrastructure: {
         totalClassrooms: school.classes.length,
         classroomsInUse: rooms.length,
-        totalStudents: school.classes.reduce((sum, c) => sum + c.students.length, 0),
+        totalStudents: school.classes.reduce((sum: number, c: any) => sum + c.students.length, 0),
         averageClassSize:
-          school.classes.reduce((sum, c) => sum + c.students.length, 0) / school.classes.length ||
+          school.classes.reduce((sum: number, c: any) => sum + c.students.length, 0) / school.classes.length ||
           0,
         rooms: rooms,
         // Additional fields can be added as needed
@@ -497,7 +517,7 @@ app.get("/export/:schoolId/:reportType", async (c) => {
       csvData = "Admission Number,First Name,Last Name,Gender,Date of Birth,Class,Boarding Status\n";
 
       // CSV Rows
-      students.forEach((student) => {
+      students.forEach((student: any) => {
         csvData += `${student.admissionNumber},${student.firstName},${student.lastName},${student.gender},${student.dateOfBirth.toISOString().split("T")[0]},${student.class.name},${student.boardingStatus}\n`;
       });
 
@@ -526,8 +546,8 @@ app.get("/export/:schoolId/:reportType", async (c) => {
 
       csvData = "TSC Number,First Name,Last Name,Email,Gender,Subjects\n";
 
-      teachers.forEach((teacher) => {
-        const subjects = teacher.subjectTeachers.map((st) => st.subject.name).join("; ");
+      teachers.forEach((teacher: any) => {
+        const subjects = teacher.subjectTeachers.map((st: any) => st.subject.name).join("; ");
         csvData += `${teacher.tscNumber || "N/A"},${teacher.firstName},${teacher.lastName},${teacher.email},${teacher.gender || "N/A"},${subjects}\n`;
       });
 
@@ -575,7 +595,7 @@ app.get("/compliance/:schoolId", async (c) => {
       },
     });
 
-    const students = school.classes.reduce((sum, c) => sum + c.students.length, 0);
+    const students = school.classes.reduce((sum: number, c: any) => sum + c.students.length, 0);
 
     // Compliance checks
     const compliance = {

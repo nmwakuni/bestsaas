@@ -85,7 +85,7 @@ app.post("/generate-records", async (c) => {
 
     // Calculate total amount
     const totalAmount = feeStructure.feeItems.reduce(
-      (sum, item) => sum + Number(item.amount),
+      (sum: number, item: any) => sum + Number(item.amount),
       0
     );
 
@@ -102,7 +102,7 @@ app.post("/generate-records", async (c) => {
 
     // Create fee records for all students
     const feeRecords = await Promise.all(
-      students.map((student) =>
+      students.map((student: any) =>
         db.feeRecord.create({
           data: {
             studentId: student.id,

@@ -430,8 +430,9 @@ app.get("/plans/current/:schoolId", async (c) => {
       Sunday: [] as any[],
     };
 
-    mealPlan.meals.forEach((planMeal) => {
-      mealsByDay[planMeal.dayOfWeek].push({
+    mealPlan.meals.forEach((planMeal: any) => {
+      const dayOfWeek = planMeal.dayOfWeek as keyof typeof mealsByDay;
+      mealsByDay[dayOfWeek].push({
         mealType: planMeal.mealType,
         meal: planMeal.meal,
       });
@@ -513,21 +514,21 @@ app.get("/statistics/:schoolId", async (c) => {
     });
 
     // Count by meal type
-    const byMealType = meals.reduce((acc: any, meal) => {
+    const byMealType = meals.reduce((acc: any, meal: any) => {
       if (!acc[meal.mealType]) acc[meal.mealType] = 0;
       acc[meal.mealType]++;
       return acc;
     }, {});
 
     // Average cost
-    const costsWithValue = meals.filter((m) => m.cost !== null);
+    const costsWithValue = meals.filter((m: any) => m.cost !== null);
     const avgCost =
-      costsWithValue.reduce((sum, m) => sum + (m.cost || 0), 0) / costsWithValue.length || 0;
+      costsWithValue.reduce((sum: number, m: any) => sum + (m.cost || 0), 0) / costsWithValue.length || 0;
 
     // Common allergens
     const allergenCount: any = {};
-    meals.forEach((meal) => {
-      meal.allergens?.forEach((allergen) => {
+    meals.forEach((meal: any) => {
+      meal.allergens?.forEach((allergen: any) => {
         if (!allergenCount[allergen]) allergenCount[allergen] = 0;
         allergenCount[allergen]++;
       });

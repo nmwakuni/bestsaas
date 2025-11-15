@@ -389,21 +389,21 @@ app.get("/statistics/:schoolId", async (c) => {
     });
 
     // Count by status
-    const byStatus = admissions.reduce((acc: any, adm) => {
+    const byStatus = admissions.reduce((acc: any, adm: any) => {
       if (!acc[adm.status]) acc[adm.status] = 0;
       acc[adm.status]++;
       return acc;
     }, {});
 
     // Count by class
-    const byClass = admissions.reduce((acc: any, adm) => {
+    const byClass = admissions.reduce((acc: any, adm: any) => {
       if (!acc[adm.applyingForClass]) acc[adm.applyingForClass] = 0;
       acc[adm.applyingForClass]++;
       return acc;
     }, {});
 
     // Applications per month
-    const byMonth = admissions.reduce((acc: any, adm) => {
+    const byMonth = admissions.reduce((acc: any, adm: any) => {
       const month = adm.appliedAt.toISOString().slice(0, 7);
       if (!acc[month]) acc[month] = 0;
       acc[month]++;

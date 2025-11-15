@@ -11,7 +11,7 @@ app.post("/", async (c) => {
     const { studentId, feeRecordId, amount, paymentMethod, paidBy, notes, schoolId } = body;
 
     // Start transaction
-    const payment = await db.$transaction(async (tx) => {
+    const payment = await db.$transaction(async (tx: any) => {
       // Create payment record
       const payment = await tx.payment.create({
         data: {

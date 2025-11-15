@@ -388,7 +388,7 @@ app.get("/grades", async (c) => {
         where: { classId },
         select: { id: true },
       });
-      where.studentId = { in: students.map((s) => s.id) };
+      where.studentId = { in: students.map((s: any) => s.id) };
     }
 
     const grades = await db.grade.findMany({
@@ -516,7 +516,7 @@ app.get("/student-report/:studentId", async (c) => {
     });
 
     // Group by subject and calculate averages
-    const subjectGrades = grades.reduce((acc: any, grade) => {
+    const subjectGrades = grades.reduce((acc: any, grade: any) => {
       const subjectId = grade.subjectId;
       if (!acc[subjectId]) {
         acc[subjectId] = {
@@ -574,7 +574,7 @@ app.get("/class-report/:classId", async (c) => {
       select: { id: true, firstName: true, lastName: true, admissionNumber: true },
     });
 
-    const studentIds = students.map((s) => s.id);
+    const studentIds = students.map((s: any) => s.id);
 
     const where: any = {
       studentId: { in: studentIds },
@@ -592,17 +592,17 @@ app.get("/class-report/:classId", async (c) => {
     });
 
     // Calculate class statistics
-    const scores = grades.map((g) => (g.score / g.maxScore) * 100);
-    const average = scores.reduce((a, b) => a + b, 0) / scores.length;
+    const scores = grades.map((g: any) => (g.score / g.maxScore) * 100);
+    const average = scores.reduce((a: number, b: number) => a + b, 0) / scores.length;
     const highest = Math.max(...scores);
     const lowest = Math.min(...scores);
 
     // Group by student
-    const studentPerformance = students.map((student) => {
-      const studentGrades = grades.filter((g) => g.studentId === student.id);
-      const studentScores = studentGrades.map((g) => (g.score / g.maxScore) * 100);
+    const studentPerformance = students.map((student: any) => {
+      const studentGrades = grades.filter((g: any) => g.studentId === student.id);
+      const studentScores = studentGrades.map((g: any) => (g.score / g.maxScore) * 100);
       const studentAverage =
-        studentScores.reduce((a, b) => a + b, 0) / studentScores.length || 0;
+        studentScores.reduce((a: number, b: number) => a + b, 0) / studentScores.length || 0;
 
       return {
         student,
@@ -622,7 +622,7 @@ app.get("/class-report/:classId", async (c) => {
           highest,
           lowest,
         },
-        studentPerformance: studentPerformance.sort((a, b) => b.average - a.average),
+        studentPerformance: studentPerformance.sort((a: any, b: any) => b.average - a.average),
       },
     });
   } catch (error) {

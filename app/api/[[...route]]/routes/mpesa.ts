@@ -96,7 +96,7 @@ app.post("/callback", async (c) => {
 
     if (parsed.resultCode === 0) {
       // Payment successful
-      await db.$transaction(async (tx) => {
+      await db.$transaction(async (tx: any) => {
         // Update payment
         await tx.payment.update({
           where: { id: payment.id },
@@ -258,7 +258,7 @@ app.post("/c2b/confirmation", async (c) => {
     }
 
     // Create payment record
-    await db.$transaction(async (tx) => {
+    await db.$transaction(async (tx: any) => {
       const payment = await tx.payment.create({
         data: {
           schoolId: student.schoolId,

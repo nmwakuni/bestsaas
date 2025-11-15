@@ -58,7 +58,7 @@ class DarajaAPI {
   private async getAccessToken(): Promise<string> {
     // Return cached token if still valid
     if (this.accessToken && Date.now() < this.tokenExpiry) {
-      return this.accessToken;
+      return this.accessToken!;
     }
 
     try {
@@ -79,7 +79,7 @@ class DarajaAPI {
       // Token expires in 3600 seconds, we'll refresh 5 minutes before
       this.tokenExpiry = Date.now() + (3600 - 300) * 1000;
 
-      return this.accessToken;
+      return this.accessToken!;
     } catch (error) {
       console.error("Error getting access token:", error);
       throw new Error("Failed to authenticate with M-Pesa");

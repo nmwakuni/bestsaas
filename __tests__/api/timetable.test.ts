@@ -2,15 +2,15 @@ import { describe, it, expect, beforeEach, jest } from '@jest/globals'
 
 const mockPrismaClient = {
   timetableSlot: {
-    create: jest.fn(),
-    findMany: jest.fn(),
-    findUnique: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-    deleteMany: jest.fn(),
+    create: jest.fn() as any,
+    findMany: jest.fn() as any,
+    findUnique: jest.fn() as any,
+    update: jest.fn() as any,
+    delete: jest.fn() as any,
+    deleteMany: jest.fn() as any,
   },
   class: {
-    findMany: jest.fn(),
+    findMany: jest.fn() as any,
   },
 }
 

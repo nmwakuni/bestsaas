@@ -2,28 +2,28 @@ import { describe, it, expect, beforeEach, jest } from '@jest/globals'
 
 const mockPrismaClient = {
   subject: {
-    findFirst: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-    findMany: jest.fn(),
-    findUnique: jest.fn(),
+    findFirst: jest.fn() as any,
+    create: jest.fn() as any,
+    update: jest.fn() as any,
+    delete: jest.fn() as any,
+    findMany: jest.fn() as any,
+    findUnique: jest.fn() as any,
   },
   grade: {
-    create: jest.fn(),
-    findMany: jest.fn(),
-    findUnique: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
+    create: jest.fn() as any,
+    findMany: jest.fn() as any,
+    findUnique: jest.fn() as any,
+    update: jest.fn() as any,
+    delete: jest.fn() as any,
   },
   subjectTeacher: {
-    findFirst: jest.fn(),
-    create: jest.fn(),
-    delete: jest.fn(),
-    findMany: jest.fn(),
+    findFirst: jest.fn() as any,
+    create: jest.fn() as any,
+    delete: jest.fn() as any,
+    findMany: jest.fn() as any,
   },
   student: {
-    findMany: jest.fn(),
+    findMany: jest.fn() as any,
   },
 }
 

@@ -287,7 +287,7 @@ app.get("/calendar/:schoolId/:year/:month", async (c) => {
     });
 
     // Group events by date
-    const eventsByDate = events.reduce((acc: any, event) => {
+    const eventsByDate = events.reduce((acc: any, event: any) => {
       const dateKey = event.startDate.toISOString().split("T")[0];
       if (!acc[dateKey]) {
         acc[dateKey] = [];
@@ -323,7 +323,7 @@ app.get("/types/:schoolId", async (c) => {
     });
 
     // Count by type
-    const typeStats = events.reduce((acc: any, event) => {
+    const typeStats = events.reduce((acc: any, event: any) => {
       const type = event.eventType;
       if (!acc[type]) {
         acc[type] = 0;

@@ -157,7 +157,7 @@ app.get("/statement/:studentId", async (c) => {
             paidAmount: 0,
             balance: 0,
           },
-      payments: student.payments.map((p) => ({
+      payments: student.payments.map((p: any) => ({
         date: p.createdAt,
         receiptNumber: p.receiptNumber,
         amount: Number(p.amount),

@@ -1,9 +1,10 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
+import React from 'react'
 
 // Mock fetch globally
-global.fetch = jest.fn()
+global.fetch = jest.fn() as any
 
 // Create a mock Gradebook component for testing
 const MockGradebook = () => {
@@ -65,9 +66,6 @@ const MockGradebook = () => {
     </div>
   )
 }
-
-// We need to import React for the mock component to work
-import React from 'react'
 
 describe('Gradebook Component', () => {
   beforeEach(() => {
