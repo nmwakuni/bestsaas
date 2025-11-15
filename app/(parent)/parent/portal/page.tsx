@@ -2,15 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  DollarSign,
-  Download,
-  User,
-  Calendar,
-  CreditCard,
-  FileText,
-  LogOut,
-} from "lucide-react";
+import { DollarSign, Download, User, Calendar, CreditCard, FileText, LogOut } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
 interface Child {
@@ -71,7 +63,7 @@ export default function ParentPortalPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
         <div className="text-gray-600">Loading...</div>
       </div>
     );
@@ -79,9 +71,9 @@ export default function ParentPortalPage() {
 
   if (!parent) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Unable to load parent information</p>
+          <p className="mb-4 text-red-600">Unable to load parent information</p>
           <button
             onClick={() => router.push("/parent/login")}
             className="text-primary-600 hover:text-primary-700"
@@ -103,8 +95,8 @@ export default function ParentPortalPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Parent Portal</h1>
               <p className="text-gray-600">
@@ -115,49 +107,45 @@ export default function ParentPortalPage() {
               onClick={() => router.push("/parent/login")}
               className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="h-5 w-5" />
               <span>Logout</span>
             </button>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Children Selector */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Select Child
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mb-6 rounded-xl bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">Select Child</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {parent.students.map((child) => (
               <button
                 key={child.id}
                 onClick={() => setSelectedChild(child)}
-                className={`p-4 rounded-lg border-2 transition text-left ${
+                className={`rounded-lg border-2 p-4 text-left transition ${
                   selectedChild?.id === child.id
                     ? "border-primary-600 bg-primary-50"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-100">
                     {child.photoUrl ? (
                       <img
                         src={child.photoUrl}
                         alt={child.firstName}
-                        className="w-12 h-12 rounded-full object-cover"
+                        className="h-12 w-12 rounded-full object-cover"
                       />
                     ) : (
-                      <User className="w-6 h-6 text-primary-600" />
+                      <User className="h-6 w-6 text-primary-600" />
                     )}
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">
                       {child.firstName} {child.lastName}
                     </p>
-                    <p className="text-sm text-gray-600">
-                      {child.class?.name || "No class"}
-                    </p>
+                    <p className="text-sm text-gray-600">{child.class?.name || "No class"}</p>
                   </div>
                 </div>
               </button>
@@ -168,31 +156,31 @@ export default function ParentPortalPage() {
         {selectedChild && (
           <>
             {/* Fee Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="bg-white rounded-xl shadow-md p-6">
-                <div className="flex items-center justify-between mb-2">
+            <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="rounded-xl bg-white p-6 shadow-md">
+                <div className="mb-2 flex items-center justify-between">
                   <p className="text-sm text-gray-600">Total Fee</p>
-                  <DollarSign className="w-5 h-5 text-blue-600" />
+                  <DollarSign className="h-5 w-5 text-blue-600" />
                 </div>
                 <p className="text-2xl font-bold text-gray-900">
                   {formatCurrency(currentFeeRecord?.totalAmount || 0)}
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-md p-6">
-                <div className="flex items-center justify-between mb-2">
+              <div className="rounded-xl bg-white p-6 shadow-md">
+                <div className="mb-2 flex items-center justify-between">
                   <p className="text-sm text-gray-600">Paid</p>
-                  <CreditCard className="w-5 h-5 text-green-600" />
+                  <CreditCard className="h-5 w-5 text-green-600" />
                 </div>
                 <p className="text-2xl font-bold text-green-600">
                   {formatCurrency(currentFeeRecord?.paidAmount || 0)}
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-md p-6">
-                <div className="flex items-center justify-between mb-2">
+              <div className="rounded-xl bg-white p-6 shadow-md">
+                <div className="mb-2 flex items-center justify-between">
                   <p className="text-sm text-gray-600">Balance</p>
-                  <FileText className="w-5 h-5 text-red-600" />
+                  <FileText className="h-5 w-5 text-red-600" />
                 </div>
                 <p className="text-2xl font-bold text-red-600">
                   {formatCurrency(currentFeeRecord?.balance || 0)}
@@ -201,38 +189,32 @@ export default function ParentPortalPage() {
             </div>
 
             {/* Actions */}
-            <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Quick Actions
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="mb-6 rounded-xl bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-lg font-semibold text-gray-900">Quick Actions</h2>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <PayNowButton
                   studentId={selectedChild.id}
                   balance={currentFeeRecord?.balance || 0}
                   parentPhone={parent.phone}
                 />
-                <button className="flex items-center justify-center space-x-2 bg-gray-100 text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-200 transition">
-                  <Download className="w-5 h-5" />
+                <button className="flex items-center justify-center space-x-2 rounded-lg bg-gray-100 px-6 py-3 text-gray-900 transition hover:bg-gray-200">
+                  <Download className="h-5 w-5" />
                   <span>Download Statement</span>
                 </button>
-                <button className="flex items-center justify-center space-x-2 bg-gray-100 text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-200 transition">
-                  <FileText className="w-5 h-5" />
+                <button className="flex items-center justify-center space-x-2 rounded-lg bg-gray-100 px-6 py-3 text-gray-900 transition hover:bg-gray-200">
+                  <FileText className="h-5 w-5" />
                   <span>View Receipts</span>
                 </button>
               </div>
             </div>
 
             {/* Student Details */}
-            <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Student Information
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="mb-6 rounded-xl bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-lg font-semibold text-gray-900">Student Information</h2>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <p className="text-sm text-gray-600">Admission Number</p>
-                  <p className="font-semibold text-gray-900">
-                    {selectedChild.admissionNumber}
-                  </p>
+                  <p className="font-semibold text-gray-900">{selectedChild.admissionNumber}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Class</p>
@@ -262,13 +244,13 @@ export default function ParentPortalPage() {
 
         {/* Total Balance for All Children */}
         {parent.students.length > 1 && (
-          <div className="bg-primary-600 text-white rounded-xl shadow-md p-6 mt-6">
-            <div className="flex justify-between items-center">
+          <div className="mt-6 rounded-xl bg-primary-600 p-6 text-white shadow-md">
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-primary-100 mb-1">Total Balance (All Children)</p>
+                <p className="mb-1 text-primary-100">Total Balance (All Children)</p>
                 <p className="text-3xl font-bold">{formatCurrency(totalOwed)}</p>
               </div>
-              <DollarSign className="w-12 h-12 text-primary-200" />
+              <DollarSign className="h-12 w-12 text-primary-200" />
             </div>
           </div>
         )}
@@ -330,26 +312,20 @@ function PayNowButton({
       <button
         onClick={() => setShowModal(true)}
         disabled={balance <= 0}
-        className="flex items-center justify-center space-x-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex items-center justify-center space-x-2 rounded-lg bg-green-600 px-6 py-3 text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <CreditCard className="w-5 h-5" />
+        <CreditCard className="h-5 w-5" />
         <span>Pay via M-Pesa</span>
       </button>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
-              Pay via M-Pesa
-            </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="w-full max-w-md rounded-xl bg-white p-6">
+            <h3 className="mb-4 text-xl font-bold text-gray-900">Pay via M-Pesa</h3>
             <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-2">
-                Balance: {formatCurrency(balance)}
-              </p>
-              <p className="text-sm text-gray-600 mb-4">
-                Phone: {parentPhone}
-              </p>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <p className="mb-2 text-sm text-gray-600">Balance: {formatCurrency(balance)}</p>
+              <p className="mb-4 text-sm text-gray-600">Phone: {parentPhone}</p>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Amount to Pay (KES)
               </label>
               <input
@@ -357,20 +333,20 @@ function PayNowButton({
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="Enter amount"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-primary-600"
               />
             </div>
             <div className="flex space-x-3">
               <button
                 onClick={() => setShowModal(false)}
-                className="flex-1 bg-gray-100 text-gray-900 px-4 py-3 rounded-lg hover:bg-gray-200 transition"
+                className="flex-1 rounded-lg bg-gray-100 px-4 py-3 text-gray-900 transition hover:bg-gray-200"
               >
                 Cancel
               </button>
               <button
                 onClick={handlePayment}
                 disabled={loading}
-                className="flex-1 bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
+                className="flex-1 rounded-lg bg-green-600 px-4 py-3 text-white transition hover:bg-green-700 disabled:opacity-50"
               >
                 {loading ? "Processing..." : "Pay Now"}
               </button>
@@ -400,10 +376,8 @@ function PaymentHistory({ studentId }: { studentId: string }) {
   }, [studentId]);
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        Payment History
-      </h2>
+    <div className="rounded-xl bg-white p-6 shadow-md">
+      <h2 className="mb-4 text-lg font-semibold text-gray-900">Payment History</h2>
       {loading ? (
         <p className="text-gray-600">Loading...</p>
       ) : payments.length === 0 ? (
@@ -413,19 +387,11 @@ function PaymentHistory({ studentId }: { studentId: string }) {
           <table className="w-full">
             <thead>
               <tr className="border-b">
-                <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
-                  Date
-                </th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
-                  Receipt
-                </th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-gray-900">
-                  Method
-                </th>
-                <th className="text-right py-3 px-4 text-sm font-semibold text-gray-900">
-                  Amount
-                </th>
-                <th className="text-center py-3 px-4 text-sm font-semibold text-gray-900">
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Date</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Receipt</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Method</th>
+                <th className="px-4 py-3 text-right text-sm font-semibold text-gray-900">Amount</th>
+                <th className="px-4 py-3 text-center text-sm font-semibold text-gray-900">
                   Status
                 </th>
               </tr>
@@ -433,26 +399,24 @@ function PaymentHistory({ studentId }: { studentId: string }) {
             <tbody>
               {payments.map((payment) => (
                 <tr key={payment.id} className="border-b">
-                  <td className="py-3 px-4 text-sm text-gray-600">
+                  <td className="px-4 py-3 text-sm text-gray-600">
                     {new Date(payment.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-900 font-mono">
+                  <td className="px-4 py-3 font-mono text-sm text-gray-900">
                     {payment.receiptNumber}
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-600">
-                    {payment.paymentMethod}
-                  </td>
-                  <td className="py-3 px-4 text-sm text-gray-900 font-semibold text-right">
+                  <td className="px-4 py-3 text-sm text-gray-600">{payment.paymentMethod}</td>
+                  <td className="px-4 py-3 text-right text-sm font-semibold text-gray-900">
                     {formatCurrency(payment.amount)}
                   </td>
-                  <td className="py-3 px-4 text-center">
+                  <td className="px-4 py-3 text-center">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      className={`rounded-full px-2 py-1 text-xs font-semibold ${
                         payment.status === "COMPLETED"
                           ? "bg-green-100 text-green-800"
                           : payment.status === "PENDING"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-red-100 text-red-800"
                       }`}
                     >
                       {payment.status}

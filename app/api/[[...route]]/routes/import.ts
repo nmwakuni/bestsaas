@@ -101,10 +101,7 @@ app.post("/students/bulk", async (c) => {
 
         // Generate admission number
         const currentYear = new Date().getFullYear();
-        const admissionNumber = generateAdmissionNumber(
-          school.code,
-          currentYear
-        );
+        const admissionNumber = generateAdmissionNumber(school.code, currentYear);
 
         // Create student
         const student = await db.student.create({

@@ -136,9 +136,7 @@ export default function CBCReportsPage() {
     if (!selectedStudent) return;
 
     try {
-      const response = await fetch(
-        `/api/cbc/report-cards/student/${selectedStudent.id}`
-      );
+      const response = await fetch(`/api/cbc/report-cards/student/${selectedStudent.id}`);
       const data = await response.json();
 
       if (data.success && data.reportCards.length > 0) {
@@ -167,7 +165,12 @@ export default function CBCReportsPage() {
     }
   };
 
-  const handleSaveAssessment = async (subjectId: string, competencyLevel: string, strand: string, teacherComment: string) => {
+  const handleSaveAssessment = async (
+    subjectId: string,
+    competencyLevel: string,
+    strand: string,
+    teacherComment: string
+  ) => {
     if (!selectedStudent) return;
 
     try {
@@ -257,9 +260,9 @@ export default function CBCReportsPage() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">CBC Report Card Designer</h1>
+        <h1 className="mb-2 text-3xl font-bold">CBC Report Card Designer</h1>
         <p className="text-gray-600">
           Create Competency-Based Curriculum report cards for students
         </p>
@@ -268,8 +271,8 @@ export default function CBCReportsPage() {
       <div className="grid grid-cols-12 gap-6">
         {/* Student List */}
         <div className="col-span-4">
-          <Card className="h-[calc(100vh-200px)] overflow-hidden flex flex-col">
-            <div className="p-4 border-b">
+          <Card className="flex h-[calc(100vh-200px)] flex-col overflow-hidden">
+            <div className="border-b p-4">
               <SearchInput
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -281,8 +284,10 @@ export default function CBCReportsPage() {
                 <div
                   key={student.id}
                   onClick={() => setSelectedStudent(student)}
-                  className={`p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors ${
-                    selectedStudent?.id === student.id ? "bg-blue-50 border-l-4 border-l-blue-500" : ""
+                  className={`cursor-pointer border-b p-4 transition-colors hover:bg-gray-50 ${
+                    selectedStudent?.id === student.id
+                      ? "border-l-4 border-l-blue-500 bg-blue-50"
+                      : ""
                   }`}
                 >
                   <p className="font-semibold">
@@ -305,7 +310,7 @@ export default function CBCReportsPage() {
             <>
               {/* Header */}
               <Card className="mb-6 p-6">
-                <div className="flex justify-between items-start">
+                <div className="flex items-start justify-between">
                   <div>
                     <h2 className="text-2xl font-bold">
                       {selectedStudent.firstName} {selectedStudent.lastName}
@@ -332,7 +337,7 @@ export default function CBCReportsPage() {
               </Card>
 
               {/* Tabs */}
-              <div className="flex gap-2 mb-6">
+              <div className="mb-6 flex gap-2">
                 <Button
                   variant={activeTab === "assessments" ? "primary" : "outline"}
                   onClick={() => setActiveTab("assessments")}
@@ -350,7 +355,7 @@ export default function CBCReportsPage() {
               {/* Content */}
               {activeTab === "assessments" ? (
                 <Card className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">Learning Area Assessments</h3>
+                  <h3 className="mb-4 text-lg font-semibold">Learning Area Assessments</h3>
                   <div className="space-y-4">
                     {subjects.map((subject) => {
                       const existingAssessment = assessments.find(
@@ -370,7 +375,7 @@ export default function CBCReportsPage() {
                 </Card>
               ) : (
                 <Card className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">Core Competencies</h3>
+                  <h3 className="mb-4 text-lg font-semibold">Core Competencies</h3>
                   <div className="space-y-4">
                     {Object.entries(competencies).map(([key, value]) => (
                       <div key={key} className="flex items-center justify-between">
@@ -381,10 +386,8 @@ export default function CBCReportsPage() {
                           {competencyLevels.map((level) => (
                             <button
                               key={level}
-                              onClick={() =>
-                                setCompetencies({ ...competencies, [key]: level })
-                              }
-                              className={`px-4 py-2 rounded-md transition-colors ${
+                              onClick={() => setCompetencies({ ...competencies, [key]: level })}
+                              className={`rounded-md px-4 py-2 transition-colors ${
                                 value === level
                                   ? getCompetencyColor(level)
                                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -400,25 +403,21 @@ export default function CBCReportsPage() {
 
                   <div className="mt-6 space-y-4">
                     <div>
-                      <label className="block font-medium mb-2">Class Teacher Comment</label>
+                      <label className="mb-2 block font-medium">Class Teacher Comment</label>
                       <textarea
                         value={comments.teacher}
-                        onChange={(e) =>
-                          setComments({ ...comments, teacher: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        onChange={(e) => setComments({ ...comments, teacher: e.target.value })}
+                        className="w-full rounded-md border border-gray-300 px-3 py-2"
                         rows={3}
                         placeholder="Overall performance and recommendations..."
                       />
                     </div>
                     <div>
-                      <label className="block font-medium mb-2">Principal Comment</label>
+                      <label className="mb-2 block font-medium">Principal Comment</label>
                       <textarea
                         value={comments.principal}
-                        onChange={(e) =>
-                          setComments({ ...comments, principal: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        onChange={(e) => setComments({ ...comments, principal: e.target.value })}
+                        className="w-full rounded-md border border-gray-300 px-3 py-2"
                         rows={3}
                         placeholder="Principal's remarks..."
                       />
@@ -428,7 +427,7 @@ export default function CBCReportsPage() {
               )}
 
               {/* Actions */}
-              <div className="flex gap-4 mt-6">
+              <div className="mt-6 flex gap-4">
                 <Button onClick={handleGenerateReportCard} className="flex-1">
                   Generate Report Card
                 </Button>
@@ -488,8 +487,8 @@ function AssessmentCard({
   };
 
   return (
-    <div className="border rounded-lg p-4">
-      <div className="flex justify-between items-start mb-3">
+    <div className="rounded-lg border p-4">
+      <div className="mb-3 flex items-start justify-between">
         <div>
           <h4 className="font-semibold">{subject.name}</h4>
           {existingAssessment && !isEditing && (
@@ -498,11 +497,7 @@ function AssessmentCard({
             </Badge>
           )}
         </div>
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => setIsEditing(!isEditing)}
-        >
+        <Button size="sm" variant="outline" onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? "Cancel" : existingAssessment ? "Edit" : "Add"}
         </Button>
       </div>
@@ -510,23 +505,23 @@ function AssessmentCard({
       {isEditing && (
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-medium mb-1">Strand (Optional)</label>
+            <label className="mb-1 block text-sm font-medium">Strand (Optional)</label>
             <input
               type="text"
               value={strand}
               onChange={(e) => setStrand(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
               placeholder="e.g., Numbers and Operations"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Competency Level</label>
+            <label className="mb-1 block text-sm font-medium">Competency Level</label>
             <div className="flex gap-2">
               {competencyLevels.map((lvl) => (
                 <button
                   key={lvl}
                   onClick={() => setLevel(lvl)}
-                  className={`px-3 py-1 rounded-md text-sm transition-colors ${
+                  className={`rounded-md px-3 py-1 text-sm transition-colors ${
                     level === lvl
                       ? getCompetencyColor(lvl)
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -538,11 +533,11 @@ function AssessmentCard({
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Teacher Comment</label>
+            <label className="mb-1 block text-sm font-medium">Teacher Comment</label>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
               rows={2}
               placeholder="Brief comment on student's performance..."
             />

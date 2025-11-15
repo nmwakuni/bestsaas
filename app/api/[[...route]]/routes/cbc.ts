@@ -345,10 +345,7 @@ app.get("/assessments/class/:classId", async (c) => {
         },
         subject: true,
       },
-      orderBy: [
-        { student: { lastName: "asc" } },
-        { student: { firstName: "asc" } },
-      ],
+      orderBy: [{ student: { lastName: "asc" } }, { student: { firstName: "asc" } }],
     });
 
     return c.json({

@@ -74,15 +74,7 @@ app.post("/", async (c) => {
 // GET /api/events - Get all events with filters
 app.get("/", async (c) => {
   try {
-    const {
-      schoolId,
-      eventType,
-      startDate,
-      endDate,
-      classId,
-      month,
-      year,
-    } = c.req.query();
+    const { schoolId, eventType, startDate, endDate, classId, month, year } = c.req.query();
 
     if (!schoolId) {
       return c.json({ success: false, error: "School ID is required" }, 400);

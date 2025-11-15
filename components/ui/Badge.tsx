@@ -34,13 +34,13 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center font-semibold rounded-full",
+        "inline-flex items-center rounded-full font-semibold",
         variants[variant],
         sizes[size],
         className
       )}
     >
-      {Icon && <Icon className="w-3 h-3 mr-1" />}
+      {Icon && <Icon className="mr-1 h-3 w-3" />}
       {children}
     </span>
   );

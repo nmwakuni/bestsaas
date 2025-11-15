@@ -35,9 +35,7 @@ export function Table<T extends Record<string, any>>({
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center py-12 text-gray-600">
-        {emptyMessage}
-      </div>
+      <div className="flex items-center justify-center py-12 text-gray-600">{emptyMessage}</div>
     );
   }
 
@@ -50,7 +48,7 @@ export function Table<T extends Record<string, any>>({
               <th
                 key={index}
                 className={cn(
-                  "text-left py-3 px-4 text-sm font-semibold text-gray-900",
+                  "px-4 py-3 text-left text-sm font-semibold text-gray-900",
                   column.className
                 )}
               >
@@ -66,17 +64,15 @@ export function Table<T extends Record<string, any>>({
               onClick={() => onRowClick?.(item)}
               className={cn(
                 "border-b border-gray-100",
-                onRowClick && "cursor-pointer hover:bg-gray-50 transition"
+                onRowClick && "cursor-pointer transition hover:bg-gray-50"
               )}
             >
               {columns.map((column, colIndex) => (
                 <td
                   key={colIndex}
-                  className={cn("py-3 px-4 text-sm text-gray-600", column.className)}
+                  className={cn("px-4 py-3 text-sm text-gray-600", column.className)}
                 >
-                  {column.render
-                    ? column.render(item)
-                    : item[column.key as keyof T]}
+                  {column.render ? column.render(item) : item[column.key as keyof T]}
                 </td>
               ))}
             </tr>

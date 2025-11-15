@@ -32,25 +32,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-primary-600 rounded-lg"></div>
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
+        <div className="mb-8 text-center">
+          <div className="mb-4 flex justify-center">
+            <div className="h-12 w-12 rounded-lg bg-primary-600"></div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+          <h1 className="mb-2 text-3xl font-bold text-gray-900">Welcome Back</h1>
           <p className="text-gray-600">Sign in to your school account</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
@@ -59,13 +59,13 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-primary-600"
               placeholder="you@school.com"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
               Password
             </label>
             <input
@@ -74,17 +74,23 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-primary-600"
               placeholder="••••••••"
             />
           </div>
 
           <div className="flex items-center justify-between">
             <label className="flex items-center">
-              <input type="checkbox" className="rounded border-gray-300 text-primary-600 focus:ring-primary-600" />
+              <input
+                type="checkbox"
+                className="rounded border-gray-300 text-primary-600 focus:ring-primary-600"
+              />
               <span className="ml-2 text-sm text-gray-600">Remember me</span>
             </label>
-            <Link href="/forgot-password" className="text-sm text-primary-600 hover:text-primary-700">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-primary-600 hover:text-primary-700"
+            >
               Forgot password?
             </Link>
           </div>
@@ -92,7 +98,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-lg bg-primary-600 py-3 font-semibold text-white transition hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
@@ -100,8 +106,8 @@ export default function LoginPage() {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link href="/signup" className="text-primary-600 hover:text-primary-700 font-semibold">
+            Don&apos;t have an account?{" "}
+            <Link href="/signup" className="font-semibold text-primary-600 hover:text-primary-700">
               Sign up
             </Link>
           </p>

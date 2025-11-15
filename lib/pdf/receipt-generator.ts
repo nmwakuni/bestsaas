@@ -45,12 +45,7 @@ export function generateReceipt(data: ReceiptData): jsPDF {
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
   doc.text(data.school.address, 105, 28, { align: "center" });
-  doc.text(
-    `Tel: ${data.school.phone} | Email: ${data.school.email}`,
-    105,
-    34,
-    { align: "center" }
-  );
+  doc.text(`Tel: ${data.school.phone} | Email: ${data.school.email}`, 105, 34, { align: "center" });
 
   // Receipt Title
   doc.setFontSize(16);
@@ -61,11 +56,7 @@ export function generateReceipt(data: ReceiptData): jsPDF {
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
   doc.text(`Receipt No: ${data.payment.receiptNumber}`, 20, 65);
-  doc.text(
-    `Date: ${new Date(data.payment.date).toLocaleDateString()}`,
-    150,
-    65
-  );
+  doc.text(`Date: ${new Date(data.payment.date).toLocaleDateString()}`, 150, 65);
 
   // Line
   doc.setLineWidth(0.5);
@@ -82,9 +73,7 @@ export function generateReceipt(data: ReceiptData): jsPDF {
 
   doc.text("Name:", 20, y);
   doc.text(
-    `${data.student.firstName} ${data.student.middleName || ""} ${
-      data.student.lastName
-    }`,
+    `${data.student.firstName} ${data.student.middleName || ""} ${data.student.lastName}`,
     60,
     y
   );
@@ -160,20 +149,14 @@ export function generateReceipt(data: ReceiptData): jsPDF {
   y += 10;
   doc.setFontSize(9);
   doc.setFont("helvetica", "italic");
-  doc.text(
-    "Thank you for your payment. This is a computer-generated receipt.",
-    105,
-    y,
-    { align: "center" }
-  );
+  doc.text("Thank you for your payment. This is a computer-generated receipt.", 105, y, {
+    align: "center",
+  });
 
   y += 6;
-  doc.text(
-    "For any queries, please contact the school administration.",
-    105,
-    y,
-    { align: "center" }
-  );
+  doc.text("For any queries, please contact the school administration.", 105, y, {
+    align: "center",
+  });
 
   // Watermark
   doc.setFontSize(50);
@@ -186,8 +169,7 @@ export function generateReceipt(data: ReceiptData): jsPDF {
 export function downloadReceipt(data: ReceiptData, filename?: string): void {
   const doc = generateReceipt(data);
   const name =
-    filename ||
-    `Receipt_${data.payment.receiptNumber}_${data.student.admissionNumber}.pdf`;
+    filename || `Receipt_${data.payment.receiptNumber}_${data.student.admissionNumber}.pdf`;
   doc.save(name);
 }
 

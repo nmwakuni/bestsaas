@@ -1,26 +1,26 @@
-import { describe, it, expect, jest, beforeEach } from '@jest/globals'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import '@testing-library/jest-dom'
-import React from 'react'
+import { describe, it, expect, jest, beforeEach } from "@jest/globals";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import React from "react";
 
 // Mock fetch globally
-global.fetch = jest.fn() as any
+global.fetch = jest.fn() as any;
 
 // Create a mock Gradebook component for testing
 const MockGradebook = () => {
-  const [searchTerm, setSearchTerm] = React.useState('')
-  const [term, setTerm] = React.useState(1)
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [term, setTerm] = React.useState(1);
 
   const students = [
-    { id: '1', firstName: 'Jane', lastName: 'Doe', admissionNumber: 'ADM001' },
-    { id: '2', firstName: 'John', lastName: 'Smith', admissionNumber: 'ADM002' },
-  ]
+    { id: "1", firstName: "Jane", lastName: "Doe", admissionNumber: "ADM001" },
+    { id: "2", firstName: "John", lastName: "Smith", admissionNumber: "ADM002" },
+  ];
 
   const filteredStudents = students.filter((student) =>
     `${student.firstName} ${student.lastName} ${student.admissionNumber}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
-  )
+  );
 
   return (
     <div>
@@ -39,7 +39,7 @@ const MockGradebook = () => {
             key={t}
             onClick={() => setTerm(t)}
             data-testid={`term-${t}`}
-            className={term === t ? 'active' : ''}
+            className={term === t ? "active" : ""}
           >
             Term {t}
           </button>
@@ -55,154 +55,152 @@ const MockGradebook = () => {
                 {student.firstName} {student.lastName}
               </td>
               <td>
-                <button data-testid={`add-grade-${student.id}`}>
-                  Add Grade
-                </button>
+                <button data-testid={`add-grade-${student.id}`}>Add Grade</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-describe('Gradebook Component', () => {
+describe("Gradebook Component", () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
-  describe('Student List', () => {
-    it('should render students table', () => {
-      render(<MockGradebook />)
+  describe("Student List", () => {
+    it("should render students table", () => {
+      render(<MockGradebook />);
 
-      expect(screen.getByTestId('students-table')).toBeInTheDocument()
-      expect(screen.getByTestId('student-1')).toBeInTheDocument()
-      expect(screen.getByTestId('student-2')).toBeInTheDocument()
-    })
+      expect(screen.getByTestId("students-table")).toBeInTheDocument();
+      expect(screen.getByTestId("student-1")).toBeInTheDocument();
+      expect(screen.getByTestId("student-2")).toBeInTheDocument();
+    });
 
-    it('should display student information', () => {
-      render(<MockGradebook />)
+    it("should display student information", () => {
+      render(<MockGradebook />);
 
-      expect(screen.getByText('Jane Doe')).toBeInTheDocument()
-      expect(screen.getByText('ADM001')).toBeInTheDocument()
-    })
-  })
+      expect(screen.getByText("Jane Doe")).toBeInTheDocument();
+      expect(screen.getByText("ADM001")).toBeInTheDocument();
+    });
+  });
 
-  describe('Search Functionality', () => {
-    it('should filter students by search term', async () => {
-      render(<MockGradebook />)
+  describe("Search Functionality", () => {
+    it("should filter students by search term", async () => {
+      render(<MockGradebook />);
 
-      const searchInput = screen.getByTestId('search-input')
-      fireEvent.change(searchInput, { target: { value: 'Jane' } })
-
-      await waitFor(() => {
-        expect(screen.getByTestId('student-1')).toBeInTheDocument()
-        expect(screen.queryByTestId('student-2')).not.toBeInTheDocument()
-      })
-    })
-
-    it('should filter by admission number', async () => {
-      render(<MockGradebook />)
-
-      const searchInput = screen.getByTestId('search-input')
-      fireEvent.change(searchInput, { target: { value: 'ADM002' } })
+      const searchInput = screen.getByTestId("search-input");
+      fireEvent.change(searchInput, { target: { value: "Jane" } });
 
       await waitFor(() => {
-        expect(screen.queryByTestId('student-1')).not.toBeInTheDocument()
-        expect(screen.getByTestId('student-2')).toBeInTheDocument()
-      })
-    })
+        expect(screen.getByTestId("student-1")).toBeInTheDocument();
+        expect(screen.queryByTestId("student-2")).not.toBeInTheDocument();
+      });
+    });
 
-    it('should be case insensitive', async () => {
-      render(<MockGradebook />)
+    it("should filter by admission number", async () => {
+      render(<MockGradebook />);
 
-      const searchInput = screen.getByTestId('search-input')
-      fireEvent.change(searchInput, { target: { value: 'JANE' } })
+      const searchInput = screen.getByTestId("search-input");
+      fireEvent.change(searchInput, { target: { value: "ADM002" } });
 
       await waitFor(() => {
-        expect(screen.getByTestId('student-1')).toBeInTheDocument()
-      })
-    })
-  })
+        expect(screen.queryByTestId("student-1")).not.toBeInTheDocument();
+        expect(screen.getByTestId("student-2")).toBeInTheDocument();
+      });
+    });
 
-  describe('Term Selection', () => {
-    it('should render term selector', () => {
-      render(<MockGradebook />)
+    it("should be case insensitive", async () => {
+      render(<MockGradebook />);
 
-      expect(screen.getByTestId('term-1')).toBeInTheDocument()
-      expect(screen.getByTestId('term-2')).toBeInTheDocument()
-      expect(screen.getByTestId('term-3')).toBeInTheDocument()
-    })
+      const searchInput = screen.getByTestId("search-input");
+      fireEvent.change(searchInput, { target: { value: "JANE" } });
 
-    it('should change term on button click', () => {
-      render(<MockGradebook />)
+      await waitFor(() => {
+        expect(screen.getByTestId("student-1")).toBeInTheDocument();
+      });
+    });
+  });
 
-      const term2Button = screen.getByTestId('term-2')
-      fireEvent.click(term2Button)
+  describe("Term Selection", () => {
+    it("should render term selector", () => {
+      render(<MockGradebook />);
 
-      expect(term2Button).toHaveClass('active')
-    })
+      expect(screen.getByTestId("term-1")).toBeInTheDocument();
+      expect(screen.getByTestId("term-2")).toBeInTheDocument();
+      expect(screen.getByTestId("term-3")).toBeInTheDocument();
+    });
 
-    it('should have default term as 1', () => {
-      render(<MockGradebook />)
+    it("should change term on button click", () => {
+      render(<MockGradebook />);
 
-      const term1Button = screen.getByTestId('term-1')
-      expect(term1Button).toHaveClass('active')
-    })
-  })
+      const term2Button = screen.getByTestId("term-2");
+      fireEvent.click(term2Button);
 
-  describe('Grade Entry', () => {
-    it('should show add grade button for each student', () => {
-      render(<MockGradebook />)
+      expect(term2Button).toHaveClass("active");
+    });
 
-      expect(screen.getByTestId('add-grade-1')).toBeInTheDocument()
-      expect(screen.getByTestId('add-grade-2')).toBeInTheDocument()
-    })
+    it("should have default term as 1", () => {
+      render(<MockGradebook />);
 
-    it('should handle add grade button click', () => {
-      render(<MockGradebook />)
+      const term1Button = screen.getByTestId("term-1");
+      expect(term1Button).toHaveClass("active");
+    });
+  });
 
-      const addGradeButton = screen.getByTestId('add-grade-1')
-      fireEvent.click(addGradeButton)
+  describe("Grade Entry", () => {
+    it("should show add grade button for each student", () => {
+      render(<MockGradebook />);
+
+      expect(screen.getByTestId("add-grade-1")).toBeInTheDocument();
+      expect(screen.getByTestId("add-grade-2")).toBeInTheDocument();
+    });
+
+    it("should handle add grade button click", () => {
+      render(<MockGradebook />);
+
+      const addGradeButton = screen.getByTestId("add-grade-1");
+      fireEvent.click(addGradeButton);
 
       // Button should be clickable
-      expect(addGradeButton).toBeInTheDocument()
-    })
-  })
-})
+      expect(addGradeButton).toBeInTheDocument();
+    });
+  });
+});
 
-describe('Grade Calculations', () => {
-  it('should calculate percentage correctly', () => {
-    const score = 85
-    const maxScore = 100
-    const percentage = (score / maxScore) * 100
+describe("Grade Calculations", () => {
+  it("should calculate percentage correctly", () => {
+    const score = 85;
+    const maxScore = 100;
+    const percentage = (score / maxScore) * 100;
 
-    expect(percentage).toBe(85)
-  })
+    expect(percentage).toBe(85);
+  });
 
-  it('should calculate average from multiple grades', () => {
+  it("should calculate average from multiple grades", () => {
     const grades = [
       { score: 85, maxScore: 100 },
       { score: 90, maxScore: 100 },
       { score: 75, maxScore: 100 },
-    ]
+    ];
 
-    const percentages = grades.map((g) => (g.score / g.maxScore) * 100)
-    const average = percentages.reduce((sum, p) => sum + p, 0) / percentages.length
+    const percentages = grades.map((g) => (g.score / g.maxScore) * 100);
+    const average = percentages.reduce((sum, p) => sum + p, 0) / percentages.length;
 
-    expect(average).toBeCloseTo(83.33, 2)
-  })
+    expect(average).toBeCloseTo(83.33, 2);
+  });
 
-  it('should color code performance', () => {
+  it("should color code performance", () => {
     const getPerformanceColor = (average: number) => {
-      if (average >= 75) return 'green'
-      if (average >= 50) return 'yellow'
-      return 'red'
-    }
+      if (average >= 75) return "green";
+      if (average >= 50) return "yellow";
+      return "red";
+    };
 
-    expect(getPerformanceColor(85)).toBe('green')
-    expect(getPerformanceColor(60)).toBe('yellow')
-    expect(getPerformanceColor(40)).toBe('red')
-  })
-})
+    expect(getPerformanceColor(85)).toBe("green");
+    expect(getPerformanceColor(60)).toBe("yellow");
+    expect(getPerformanceColor(40)).toBe("red");
+  });
+});

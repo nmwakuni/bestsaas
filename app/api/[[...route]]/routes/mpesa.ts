@@ -179,10 +179,7 @@ app.post("/callback", async (c) => {
         },
       });
 
-      console.log(
-        "Payment failed:",
-        getMpesaResultMessage(parsed.resultCode)
-      );
+      console.log("Payment failed:", getMpesaResultMessage(parsed.resultCode));
     }
 
     return c.json({
@@ -230,14 +227,7 @@ app.post("/c2b/confirmation", async (c) => {
     const body = await c.req.json();
     console.log("C2B Confirmation:", body);
 
-    const {
-      TransID,
-      TransAmount,
-      BillRefNumber,
-      MSISDN,
-      TransTime,
-      FirstName,
-    } = body;
+    const { TransID, TransAmount, BillRefNumber, MSISDN, TransTime, FirstName } = body;
 
     // BillRefNumber should be the student admission number
     const student = await db.student.findFirst({

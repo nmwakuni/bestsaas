@@ -3,6 +3,7 @@
 Complete guide for deploying the School Management System for Kenyan schools.
 
 ## Table of Contents
+
 1. [Prerequisites](#prerequisites)
 2. [Environment Setup](#environment-setup)
 3. [Database Setup](#database-setup)
@@ -17,12 +18,14 @@ Complete guide for deploying the School Management System for Kenyan schools.
 ## Prerequisites
 
 ### Required Software
+
 - **Node.js** 18.17.0 or higher
 - **npm** or **pnpm** package manager
 - **Git** for version control
 - **PostgreSQL** 14+ (via Neon or local)
 
 ### Required Accounts
+
 - **Neon** account for PostgreSQL database (free tier available)
 - **Safaricom Daraja** account for M-Pesa integration
 - **Africa's Talking** account for SMS/WhatsApp
@@ -95,6 +98,7 @@ NODE_ENV="development"
    - Add to `.env` as `DATABASE_URL`
 
 3. **Run Migrations**
+
    ```bash
    npx prisma generate
    npx prisma db push
@@ -108,6 +112,7 @@ NODE_ENV="development"
 ### Using Local PostgreSQL
 
 1. **Install PostgreSQL**
+
    ```bash
    # Ubuntu/Debian
    sudo apt-get install postgresql postgresql-contrib
@@ -117,11 +122,13 @@ NODE_ENV="development"
    ```
 
 2. **Create Database**
+
    ```bash
    createdb school_db
    ```
 
 3. **Update .env**
+
    ```env
    DATABASE_URL="postgresql://postgres:password@localhost:5432/school_db"
    ```
@@ -201,11 +208,13 @@ curl -X POST http://localhost:3000/api/messages/sms \
 ### 3. Email Service (Optional)
 
 For production, set up email service for:
+
 - Admission confirmations
 - Report card notifications
 - Payment receipts
 
 **Recommended Services:**
+
 - **Resend** (resend.com) - Modern, developer-friendly
 - **SendGrid** (sendgrid.com) - Reliable, good free tier
 - **AWS SES** (aws.amazon.com/ses) - Cost-effective
@@ -225,16 +234,19 @@ Visit http://localhost:3000
 ### 2. Database Management
 
 **View Database:**
+
 ```bash
 npx prisma studio
 ```
 
 **Generate Prisma Client:**
+
 ```bash
 npx prisma generate
 ```
 
 **Reset Database:**
+
 ```bash
 npx prisma migrate reset
 ```
@@ -253,6 +265,7 @@ npm run test:e2e
 ### Option 1: Vercel (Recommended)
 
 **Advantages:**
+
 - Zero configuration
 - Automatic HTTPS
 - Global CDN
@@ -262,6 +275,7 @@ npm run test:e2e
 **Steps:**
 
 1. **Push to GitHub**
+
    ```bash
    git init
    git add .
@@ -317,6 +331,7 @@ npm run test:e2e
 **Steps:**
 
 1. **Setup Server**
+
    ```bash
    # Update system
    sudo apt update && sudo apt upgrade -y
@@ -333,6 +348,7 @@ npm run test:e2e
    ```
 
 2. **Clone & Build**
+
    ```bash
    git clone https://github.com/yourusername/bestsaas.git
    cd bestsaas
@@ -341,6 +357,7 @@ npm run test:e2e
    ```
 
 3. **Setup PM2**
+
    ```bash
    pm2 start npm --name "school-app" -- start
    pm2 save
@@ -348,6 +365,7 @@ npm run test:e2e
    ```
 
 4. **Configure Nginx**
+
    ```nginx
    server {
        listen 80;
@@ -436,11 +454,13 @@ VALUES
 ### 5. Verify Integrations
 
 **Test M-Pesa:**
+
 - Navigate to Fees → Make Payment
 - Enter test phone number (sandbox)
 - Verify STK Push appears on phone
 
 **Test SMS:**
+
 - Navigate to Messages
 - Send test SMS
 - Verify delivery
@@ -448,6 +468,7 @@ VALUES
 ### 6. Configure School Settings
 
 Login as admin and configure:
+
 - School profile
 - Term dates
 - Fee structures
@@ -460,11 +481,13 @@ Login as admin and configure:
 ### Application Monitoring
 
 **Vercel:**
+
 - Built-in analytics
 - Real-time logs
 - Performance insights
 
 **Self-hosted:**
+
 ```bash
 # View PM2 logs
 pm2 logs
@@ -479,10 +502,12 @@ pm2 status
 ### Database Backups
 
 **Neon:**
+
 - Automatic daily backups (paid plan)
 - Manual snapshots via dashboard
 
 **Self-hosted:**
+
 ```bash
 # Backup database
 pg_dump $DATABASE_URL > backup.sql
@@ -499,6 +524,7 @@ psql $DATABASE_URL < backup.sql
 **Vercel:** Automatic
 
 **Self-hosted:**
+
 ```bash
 # Certbot auto-renewal (already setup)
 sudo certbot renew --dry-run
@@ -513,6 +539,7 @@ sudo certbot renew --dry-run
 **Error:** `Can't reach database server`
 
 **Solution:**
+
 ```bash
 # Check DATABASE_URL is correct
 echo $DATABASE_URL
@@ -529,6 +556,7 @@ npx prisma generate
 **Error:** `Module not found`
 
 **Solution:**
+
 ```bash
 # Clear cache
 rm -rf .next node_modules
@@ -541,6 +569,7 @@ npm run build
 **Error:** `Invalid credentials`
 
 **Solution:**
+
 - Verify consumer key and secret in `.env`
 - Ensure using correct environment (sandbox vs production)
 - Check passkey matches business short code
@@ -548,6 +577,7 @@ npm run build
 **Error:** `Callback URL unreachable`
 
 **Solution:**
+
 - Ensure callback URL is publicly accessible
 - Must use HTTPS in production
 - Test with tools like ngrok for local development
@@ -557,6 +587,7 @@ npm run build
 **Error:** `Invalid API key`
 
 **Solution:**
+
 - Verify AT_API_KEY in `.env`
 - Check username is correct (`sandbox` for testing)
 - Ensure phone numbers are in international format (254...)
@@ -564,6 +595,7 @@ npm run build
 ### Performance Issues
 
 **Solution:**
+
 ```bash
 # Enable Next.js production optimizations
 NODE_ENV=production npm run build
@@ -600,18 +632,22 @@ Before going live:
 When your school grows:
 
 ### Database Scaling
+
 - **Neon:** Upgrade to higher tier for more storage/connections
 - **PostgreSQL:** Set up read replicas for reporting
 
 ### Application Scaling
+
 - **Vercel:** Automatic scaling
 - **Self-hosted:** Add more servers behind load balancer
 
 ### File Storage
+
 - Move uploads to S3 or Cloudinary
 - Use CDN for static assets
 
 ### Caching
+
 - Add Redis for session storage
 - Cache frequently accessed data
 
@@ -620,16 +656,20 @@ When your school grows:
 ## Support
 
 ### Documentation
+
 - API Docs: `/docs/API_DOCUMENTATION.md`
 - User Guide: Contact for access
 
 ### Community
+
 - GitHub Issues: Report bugs
 - Discord: Join our community
 - Email: support@school.example.com
 
 ### Professional Support
+
 For production deployments requiring assistance:
+
 - Email: consulting@school.example.com
 - Setup assistance: KES 50,000
 - Monthly support: KES 20,000/month
@@ -643,6 +683,7 @@ This project is licensed under MIT License.
 ## Credits
 
 Built with:
+
 - Next.js
 - Hono
 - Better Auth

@@ -54,9 +54,7 @@ export default function EventsPage() {
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth() + 1;
 
-      const response = await fetch(
-        `/api/events/calendar/school-1/${year}/${month}`
-      );
+      const response = await fetch(`/api/events/calendar/school-1/${year}/${month}`);
       const data = await response.json();
 
       if (data.success) {
@@ -185,15 +183,11 @@ export default function EventsPage() {
   };
 
   const nextMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
-    );
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   };
 
   const prevMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
-    );
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   };
 
   const today = () => {
@@ -211,9 +205,9 @@ export default function EventsPage() {
     .slice(0, 5);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">School Calendar & Events</h1>
+        <h1 className="mb-2 text-3xl font-bold">School Calendar & Events</h1>
         <p className="text-gray-600">Manage and view school events and activities</p>
       </div>
 
@@ -222,7 +216,7 @@ export default function EventsPage() {
         <div className="col-span-8">
           <Card className="p-6">
             {/* Calendar Header */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="mb-6 flex items-center justify-between">
               <h2 className="text-2xl font-bold">{monthYear}</h2>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={prevMonth}>
@@ -244,10 +238,7 @@ export default function EventsPage() {
             <div className="grid grid-cols-7 gap-2">
               {/* Day headers */}
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                <div
-                  key={day}
-                  className="text-center font-semibold text-sm text-gray-600 py-2"
-                >
+                <div key={day} className="py-2 text-center text-sm font-semibold text-gray-600">
                   {day}
                 </div>
               ))}
@@ -255,17 +246,13 @@ export default function EventsPage() {
               {/* Calendar days */}
               {getDaysInMonth().map((date, index) => {
                 const dayEvents = date ? getEventsForDate(date) : [];
-                const isToday =
-                  date &&
-                  date.toDateString() === new Date().toDateString();
+                const isToday = date && date.toDateString() === new Date().toDateString();
 
                 return (
                   <div
                     key={index}
-                    className={`min-h-[100px] border rounded-lg p-2 ${
-                      date
-                        ? "bg-white hover:bg-gray-50 cursor-pointer"
-                        : "bg-gray-50"
+                    className={`min-h-[100px] rounded-lg border p-2 ${
+                      date ? "cursor-pointer bg-white hover:bg-gray-50" : "bg-gray-50"
                     } ${isToday ? "ring-2 ring-blue-500" : ""}`}
                     onClick={() => {
                       if (date) {
@@ -280,7 +267,7 @@ export default function EventsPage() {
                     {date && (
                       <>
                         <div
-                          className={`text-sm font-semibold mb-1 ${
+                          className={`mb-1 text-sm font-semibold ${
                             isToday ? "text-blue-600" : "text-gray-700"
                           }`}
                         >
@@ -290,9 +277,9 @@ export default function EventsPage() {
                           {dayEvents.slice(0, 2).map((event) => (
                             <div
                               key={event.id}
-                              className={`text-xs p-1 rounded ${getEventTypeColor(
+                              className={`rounded p-1 text-xs ${getEventTypeColor(
                                 event.eventType
-                              )} text-white truncate`}
+                              )} truncate text-white`}
                             >
                               {event.title}
                             </div>
@@ -316,21 +303,21 @@ export default function EventsPage() {
         <div className="col-span-4 space-y-4">
           {/* Upcoming Events */}
           <Card className="p-4">
-            <h3 className="font-semibold text-lg mb-4">Upcoming Events</h3>
+            <h3 className="mb-4 text-lg font-semibold">Upcoming Events</h3>
             <div className="space-y-3">
               {upcomingEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="border-l-4 pl-3 py-2 cursor-pointer hover:bg-gray-50 rounded"
+                  className="cursor-pointer rounded border-l-4 py-2 pl-3 hover:bg-gray-50"
                   style={{ borderColor: getEventTypeColor(event.eventType).replace("bg-", "#") }}
                   onClick={() => {
                     setSelectedEvent(event);
                     setIsEventModalOpen(true);
                   }}
                 >
-                  <div className="flex justify-between items-start">
+                  <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className="font-semibold text-sm">{event.title}</p>
+                      <p className="text-sm font-semibold">{event.title}</p>
                       <p className="text-xs text-gray-600">
                         {new Date(event.startDate).toLocaleDateString()}
                       </p>
@@ -344,7 +331,7 @@ export default function EventsPage() {
 
           {/* Event Types Legend */}
           <Card className="p-4">
-            <h3 className="font-semibold text-lg mb-4">Event Types</h3>
+            <h3 className="mb-4 text-lg font-semibold">Event Types</h3>
             <div className="space-y-2">
               {[
                 "Academic",
@@ -357,9 +344,7 @@ export default function EventsPage() {
                 "Other",
               ].map((type) => (
                 <div key={type} className="flex items-center gap-2">
-                  <div
-                    className={`w-4 h-4 rounded ${getEventTypeColor(type)}`}
-                  />
+                  <div className={`h-4 w-4 rounded ${getEventTypeColor(type)}`} />
                   <span className="text-sm">{type}</span>
                 </div>
               ))}
@@ -368,7 +353,7 @@ export default function EventsPage() {
 
           {/* Statistics */}
           <Card className="p-4">
-            <h3 className="font-semibold text-lg mb-4">This Month</h3>
+            <h3 className="mb-4 text-lg font-semibold">This Month</h3>
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Total Events</span>
@@ -398,45 +383,46 @@ export default function EventsPage() {
 
             {selectedEvent.description && (
               <div>
-                <h4 className="font-semibold text-sm text-gray-500">Description</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Description</h4>
                 <p className="mt-1">{selectedEvent.description}</p>
               </div>
             )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold text-sm text-gray-500">Start Date</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Start Date</h4>
                 <p>{new Date(selectedEvent.startDate).toLocaleDateString()}</p>
-                {selectedEvent.startTime && <p className="text-sm text-gray-600">{selectedEvent.startTime}</p>}
+                {selectedEvent.startTime && (
+                  <p className="text-sm text-gray-600">{selectedEvent.startTime}</p>
+                )}
               </div>
               {selectedEvent.endDate && (
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-500">End Date</h4>
+                  <h4 className="text-sm font-semibold text-gray-500">End Date</h4>
                   <p>{new Date(selectedEvent.endDate).toLocaleDateString()}</p>
-                  {selectedEvent.endTime && <p className="text-sm text-gray-600">{selectedEvent.endTime}</p>}
+                  {selectedEvent.endTime && (
+                    <p className="text-sm text-gray-600">{selectedEvent.endTime}</p>
+                  )}
                 </div>
               )}
             </div>
 
             {selectedEvent.location && (
               <div>
-                <h4 className="font-semibold text-sm text-gray-500">Location</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Location</h4>
                 <p>{selectedEvent.location}</p>
               </div>
             )}
 
             {selectedEvent.organizer && (
               <div>
-                <h4 className="font-semibold text-sm text-gray-500">Organizer</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Organizer</h4>
                 <p>{selectedEvent.organizer}</p>
               </div>
             )}
 
-            <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button
-                variant="outline"
-                onClick={() => handleDeleteEvent(selectedEvent.id)}
-              >
+            <div className="flex justify-end gap-3 border-t pt-4">
+              <Button variant="outline" onClick={() => handleDeleteEvent(selectedEvent.id)}>
                 Delete Event
               </Button>
               <Button onClick={() => setIsEventModalOpen(false)}>Close</Button>
@@ -453,7 +439,7 @@ export default function EventsPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Event Title *</label>
+            <label className="mb-1 block text-sm font-medium">Event Title *</label>
             <Input
               value={eventForm.title}
               onChange={(e) => setEventForm({ ...eventForm, title: e.target.value })}
@@ -462,11 +448,11 @@ export default function EventsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Event Type</label>
+            <label className="mb-1 block text-sm font-medium">Event Type</label>
             <select
               value={eventForm.eventType}
               onChange={(e) => setEventForm({ ...eventForm, eventType: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full rounded-md border border-gray-300 px-3 py-2"
             >
               <option value="Academic">Academic</option>
               <option value="Sports">Sports</option>
@@ -480,11 +466,11 @@ export default function EventsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="mb-1 block text-sm font-medium">Description</label>
             <textarea
               value={eventForm.description}
               onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full rounded-md border border-gray-300 px-3 py-2"
               rows={3}
               placeholder="Event description..."
             />
@@ -492,7 +478,7 @@ export default function EventsPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Start Date *</label>
+              <label className="mb-1 block text-sm font-medium">Start Date *</label>
               <Input
                 type="date"
                 value={eventForm.startDate}
@@ -500,7 +486,7 @@ export default function EventsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">End Date</label>
+              <label className="mb-1 block text-sm font-medium">End Date</label>
               <Input
                 type="date"
                 value={eventForm.endDate}
@@ -511,7 +497,7 @@ export default function EventsPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Start Time</label>
+              <label className="mb-1 block text-sm font-medium">Start Time</label>
               <Input
                 type="time"
                 value={eventForm.startTime}
@@ -519,7 +505,7 @@ export default function EventsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">End Time</label>
+              <label className="mb-1 block text-sm font-medium">End Time</label>
               <Input
                 type="time"
                 value={eventForm.endTime}
@@ -529,7 +515,7 @@ export default function EventsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Location</label>
+            <label className="mb-1 block text-sm font-medium">Location</label>
             <Input
               value={eventForm.location}
               onChange={(e) => setEventForm({ ...eventForm, location: e.target.value })}
@@ -538,7 +524,7 @@ export default function EventsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Organizer</label>
+            <label className="mb-1 block text-sm font-medium">Organizer</label>
             <Input
               value={eventForm.organizer}
               onChange={(e) => setEventForm({ ...eventForm, organizer: e.target.value })}

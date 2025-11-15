@@ -218,57 +218,57 @@ export default function AdmissionsPage() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Admissions Dashboard</h1>
+        <h1 className="mb-2 text-3xl font-bold">Admissions Dashboard</h1>
         <p className="text-gray-600">Review and manage online admission applications</p>
       </div>
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+      <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-5">
         <Card
-          className="cursor-pointer hover:shadow-md transition-shadow"
+          className="cursor-pointer transition-shadow hover:shadow-md"
           onClick={() => setStatusFilter("all")}
         >
           <div className="p-4">
             <h3 className="text-sm font-medium text-gray-500">Total Applications</h3>
-            <p className="text-2xl font-bold mt-1">{stats.total}</p>
+            <p className="mt-1 text-2xl font-bold">{stats.total}</p>
           </div>
         </Card>
         <Card
-          className="cursor-pointer hover:shadow-md transition-shadow"
+          className="cursor-pointer transition-shadow hover:shadow-md"
           onClick={() => setStatusFilter("Pending")}
         >
           <div className="p-4">
             <h3 className="text-sm font-medium text-gray-500">Pending</h3>
-            <p className="text-2xl font-bold mt-1 text-yellow-600">{stats.pending}</p>
+            <p className="mt-1 text-2xl font-bold text-yellow-600">{stats.pending}</p>
           </div>
         </Card>
         <Card
-          className="cursor-pointer hover:shadow-md transition-shadow"
+          className="cursor-pointer transition-shadow hover:shadow-md"
           onClick={() => setStatusFilter("UnderReview")}
         >
           <div className="p-4">
             <h3 className="text-sm font-medium text-gray-500">Under Review</h3>
-            <p className="text-2xl font-bold mt-1 text-blue-600">{stats.underReview}</p>
+            <p className="mt-1 text-2xl font-bold text-blue-600">{stats.underReview}</p>
           </div>
         </Card>
         <Card
-          className="cursor-pointer hover:shadow-md transition-shadow"
+          className="cursor-pointer transition-shadow hover:shadow-md"
           onClick={() => setStatusFilter("Approved")}
         >
           <div className="p-4">
             <h3 className="text-sm font-medium text-gray-500">Approved</h3>
-            <p className="text-2xl font-bold mt-1 text-green-600">{stats.approved}</p>
+            <p className="mt-1 text-2xl font-bold text-green-600">{stats.approved}</p>
           </div>
         </Card>
         <Card
-          className="cursor-pointer hover:shadow-md transition-shadow"
+          className="cursor-pointer transition-shadow hover:shadow-md"
           onClick={() => setStatusFilter("Rejected")}
         >
           <div className="p-4">
             <h3 className="text-sm font-medium text-gray-500">Rejected</h3>
-            <p className="text-2xl font-bold mt-1 text-red-600">{stats.rejected}</p>
+            <p className="mt-1 text-2xl font-bold text-red-600">{stats.rejected}</p>
           </div>
         </Card>
       </div>
@@ -284,7 +284,7 @@ export default function AdmissionsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-md"
+          className="rounded-md border border-gray-300 px-4 py-2"
         >
           <option value="all">All Status</option>
           <option value="Pending">Pending</option>
@@ -301,54 +301,54 @@ export default function AdmissionsPage() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   App. Number
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Student Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Parent Contact
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Applying For
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Applied Date
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 bg-white">
               {filteredAdmissions.map((admission) => (
                 <tr key={admission.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
                     {admission.applicationNumber}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                     {admission.firstName} {admission.lastName}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
                     <div>
                       {admission.parentFirstName} {admission.parentLastName}
                     </div>
                     <div className="text-xs text-gray-500">{admission.parentPhone}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
                     {admission.applyingForClass}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
                     {new Date(admission.appliedAt).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm">
                     {getStatusBadge(admission.status)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <td className="whitespace-nowrap px-6 py-4 text-sm">
                     <div className="flex gap-2">
                       <Button
                         size="sm"
@@ -402,54 +402,54 @@ export default function AdmissionsPage() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold text-sm text-gray-500">Application Number</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Application Number</h4>
                 <p>{selectedAdmission.applicationNumber}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-gray-500">Status</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Status</h4>
                 {getStatusBadge(selectedAdmission.status)}
               </div>
             </div>
 
             <div className="border-t pt-4">
-              <h3 className="font-semibold mb-3">Student Information</h3>
+              <h3 className="mb-3 font-semibold">Student Information</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-500">Full Name</h4>
+                  <h4 className="text-sm font-semibold text-gray-500">Full Name</h4>
                   <p>
                     {selectedAdmission.firstName} {selectedAdmission.lastName}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-500">Date of Birth</h4>
+                  <h4 className="text-sm font-semibold text-gray-500">Date of Birth</h4>
                   <p>{new Date(selectedAdmission.dateOfBirth).toLocaleDateString()}</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-500">Gender</h4>
+                  <h4 className="text-sm font-semibold text-gray-500">Gender</h4>
                   <p>{selectedAdmission.gender}</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-500">Applying For</h4>
+                  <h4 className="text-sm font-semibold text-gray-500">Applying For</h4>
                   <p>{selectedAdmission.applyingForClass}</p>
                 </div>
               </div>
             </div>
 
             <div className="border-t pt-4">
-              <h3 className="font-semibold mb-3">Parent Information</h3>
+              <h3 className="mb-3 font-semibold">Parent Information</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-500">Parent Name</h4>
+                  <h4 className="text-sm font-semibold text-gray-500">Parent Name</h4>
                   <p>
                     {selectedAdmission.parentFirstName} {selectedAdmission.parentLastName}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-500">Email</h4>
+                  <h4 className="text-sm font-semibold text-gray-500">Email</h4>
                   <p>{selectedAdmission.parentEmail}</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-500">Phone</h4>
+                  <h4 className="text-sm font-semibold text-gray-500">Phone</h4>
                   <p>{selectedAdmission.parentPhone}</p>
                 </div>
               </div>
@@ -457,21 +457,21 @@ export default function AdmissionsPage() {
 
             {selectedAdmission.previousSchool && (
               <div className="border-t pt-4">
-                <h4 className="font-semibold text-sm text-gray-500">Previous School</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Previous School</h4>
                 <p>{selectedAdmission.previousSchool}</p>
               </div>
             )}
 
             {selectedAdmission.medicalConditions && (
               <div className="border-t pt-4">
-                <h4 className="font-semibold text-sm text-gray-500">Medical Conditions</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Medical Conditions</h4>
                 <p>{selectedAdmission.medicalConditions}</p>
               </div>
             )}
 
             {selectedAdmission.reviewNotes && (
               <div className="border-t pt-4">
-                <h4 className="font-semibold text-sm text-gray-500">Review Notes</h4>
+                <h4 className="text-sm font-semibold text-gray-500">Review Notes</h4>
                 <p>{selectedAdmission.reviewNotes}</p>
               </div>
             )}
@@ -495,13 +495,11 @@ export default function AdmissionsPage() {
           </p>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Assign to Class *</label>
+            <label className="mb-1 block text-sm font-medium">Assign to Class *</label>
             <select
               value={approvalForm.classId}
-              onChange={(e) =>
-                setApprovalForm({ ...approvalForm, classId: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              onChange={(e) => setApprovalForm({ ...approvalForm, classId: e.target.value })}
+              className="w-full rounded-md border border-gray-300 px-3 py-2"
             >
               <option value="">Select Class</option>
               {classes.map((cls) => (
@@ -514,13 +512,11 @@ export default function AdmissionsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Admission Fee (KES)</label>
+            <label className="mb-1 block text-sm font-medium">Admission Fee (KES)</label>
             <Input
               type="number"
               value={approvalForm.admissionFee}
-              onChange={(e) =>
-                setApprovalForm({ ...approvalForm, admissionFee: e.target.value })
-              }
+              onChange={(e) => setApprovalForm({ ...approvalForm, admissionFee: e.target.value })}
               placeholder="0"
             />
           </div>
@@ -556,11 +552,11 @@ export default function AdmissionsPage() {
           </p>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Reason for Rejection</label>
+            <label className="mb-1 block text-sm font-medium">Reason for Rejection</label>
             <textarea
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full rounded-md border border-gray-300 px-3 py-2"
               rows={4}
               placeholder="Please provide a reason..."
             />

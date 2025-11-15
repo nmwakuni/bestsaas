@@ -22,18 +22,13 @@ const bulkSlotsSchema = z.object({
 });
 
 // Helper function to check time conflicts
-function hasTimeConflict(
-  start1: string,
-  end1: string,
-  start2: string,
-  end2: string
-): boolean {
+function hasTimeConflict(start1: string, end1: string, start2: string, end2: string): boolean {
   const s1 = timeToMinutes(start1);
   const e1 = timeToMinutes(end1);
   const s2 = timeToMinutes(start2);
   const e2 = timeToMinutes(end2);
 
-  return (s1 < e2 && e1 > s2);
+  return s1 < e2 && e1 > s2;
 }
 
 function timeToMinutes(time: string): number {
@@ -235,10 +230,7 @@ app.get("/slots", async (c) => {
           },
         },
       },
-      orderBy: [
-        { dayOfWeek: "asc" },
-        { startTime: "asc" },
-      ],
+      orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
     });
 
     return c.json({
@@ -303,7 +295,9 @@ app.put("/slots/:id", async (c) => {
 
     // Check for conflicts (excluding current slot)
     const conflicts = await checkConflicts(updateData);
-    const filteredConflicts = conflicts.filter((c: { type: string; message: string; slot: { id: string } }) => c.slot.id !== id);
+    const filteredConflicts = conflicts.filter(
+      (c: { type: string; message: string; slot: { id: string } }) => c.slot.id !== id
+    );
 
     if (filteredConflicts.length > 0) {
       return c.json(
@@ -395,14 +389,18 @@ app.get("/class/:classId", async (c) => {
           },
         },
       },
-      orderBy: [
-        { dayOfWeek: "asc" },
-        { startTime: "asc" },
-      ],
+      orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
     });
 
     // Group by day
-    type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+    type DayOfWeek =
+      | "Monday"
+      | "Tuesday"
+      | "Wednesday"
+      | "Thursday"
+      | "Friday"
+      | "Saturday"
+      | "Sunday";
     const timetableByDay: Record<DayOfWeek, typeof slots> = {
       Monday: [],
       Tuesday: [],
@@ -449,14 +447,18 @@ app.get("/teacher/:teacherId", async (c) => {
         class: true,
         subject: true,
       },
-      orderBy: [
-        { dayOfWeek: "asc" },
-        { startTime: "asc" },
-      ],
+      orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
     });
 
     // Group by day
-    type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+    type DayOfWeek =
+      | "Monday"
+      | "Tuesday"
+      | "Wednesday"
+      | "Thursday"
+      | "Friday"
+      | "Saturday"
+      | "Sunday";
     const timetableByDay: Record<DayOfWeek, typeof slots> = {
       Monday: [],
       Tuesday: [],
@@ -570,11 +572,14 @@ app.get("/statistics/:schoolId", async (c) => {
     const totalSlots = slots.length;
     const uniqueTeachers = new Set(slots.map((s: any) => s.teacherId)).size;
     const uniqueClasses = new Set(slots.map((s: any) => s.classId)).size;
-    const slotsByDay = slots.reduce((acc: Record<string, number>, slot: any) => {
-      if (!acc[slot.dayOfWeek]) acc[slot.dayOfWeek] = 0;
-      acc[slot.dayOfWeek]++;
-      return acc;
-    }, {} as Record<string, number>);
+    const slotsByDay = slots.reduce(
+      (acc: Record<string, number>, slot: any) => {
+        if (!acc[slot.dayOfWeek]) acc[slot.dayOfWeek] = 0;
+        acc[slot.dayOfWeek]++;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return c.json({
       success: true,

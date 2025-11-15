@@ -298,12 +298,9 @@ export function generateCBCReportCard(data: ReportCardData): jsPDF {
   // Footer
   doc.setFontSize(8);
   doc.setTextColor(150, 150, 150);
-  doc.text(
-    `Report Card ID: ${data.id}`,
-    pageWidth / 2,
-    doc.internal.pageSize.getHeight() - 10,
-    { align: "center" }
-  );
+  doc.text(`Report Card ID: ${data.id}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 10, {
+    align: "center",
+  });
 
   return doc;
 }

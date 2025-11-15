@@ -68,17 +68,15 @@ export default function ParentLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center">
-              <Phone className="w-8 h-8 text-white" />
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
+        <div className="mb-8 text-center">
+          <div className="mb-4 flex justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary-600">
+              <Phone className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Parent Portal
-          </h1>
+          <h1 className="mb-2 text-3xl font-bold text-gray-900">Parent Portal</h1>
           <p className="text-gray-600">
             {step === "phone"
               ? "Enter your phone number to login"
@@ -87,7 +85,7 @@ export default function ParentLoginPage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
             {error}
           </div>
         )}
@@ -95,14 +93,11 @@ export default function ParentLoginPage() {
         {step === "phone" ? (
           <form onSubmit={handleSendOTP} className="space-y-6">
             <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label htmlFor="phone" className="mb-2 block text-sm font-medium text-gray-700">
                 Phone Number
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <Phone className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
@@ -111,7 +106,7 @@ export default function ParentLoginPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   required
-                  className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 pl-10 focus:border-transparent focus:ring-2 focus:ring-primary-600"
                   placeholder="254712345678"
                 />
               </div>
@@ -123,7 +118,7 @@ export default function ParentLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-lg bg-primary-600 py-3 font-semibold text-white transition hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? "Sending..." : "Send OTP"}
             </button>
@@ -131,14 +126,11 @@ export default function ParentLoginPage() {
         ) : (
           <form onSubmit={handleVerifyOTP} className="space-y-6">
             <div>
-              <label
-                htmlFor="otp"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label htmlFor="otp" className="mb-2 block text-sm font-medium text-gray-700">
                 One-Time Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
@@ -148,19 +140,17 @@ export default function ParentLoginPage() {
                   onChange={(e) => setOtp(e.target.value)}
                   required
                   maxLength={6}
-                  className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent text-center text-2xl tracking-widest"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 pl-10 text-center text-2xl tracking-widest focus:border-transparent focus:ring-2 focus:ring-primary-600"
                   placeholder="000000"
                 />
               </div>
-              <p className="mt-2 text-sm text-gray-500">
-                Sent to {phone}
-              </p>
+              <p className="mt-2 text-sm text-gray-500">Sent to {phone}</p>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-lg bg-primary-600 py-3 font-semibold text-white transition hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? "Verifying..." : "Verify & Login"}
             </button>
@@ -172,7 +162,7 @@ export default function ParentLoginPage() {
                 setOtp("");
                 setError("");
               }}
-              className="w-full text-primary-600 hover:text-primary-700 text-sm"
+              className="w-full text-sm text-primary-600 hover:text-primary-700"
             >
               Use different phone number
             </button>
@@ -182,10 +172,7 @@ export default function ParentLoginPage() {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Need help?{" "}
-            <Link
-              href="/"
-              className="text-primary-600 hover:text-primary-700 font-semibold"
-            >
+            <Link href="/" className="font-semibold text-primary-600 hover:text-primary-700">
               Contact school
             </Link>
           </p>

@@ -11,12 +11,14 @@ const createMealSchema = z.object({
   mealType: z.enum(["Breakfast", "Lunch", "Dinner", "Snack"]),
   ingredients: z.array(z.string()).optional(),
   allergens: z.array(z.string()).optional(),
-  nutritionInfo: z.object({
-    calories: z.number().optional(),
-    protein: z.number().optional(),
-    carbs: z.number().optional(),
-    fats: z.number().optional(),
-  }).optional(),
+  nutritionInfo: z
+    .object({
+      calories: z.number().optional(),
+      protein: z.number().optional(),
+      carbs: z.number().optional(),
+      fats: z.number().optional(),
+    })
+    .optional(),
   cost: z.number().optional(),
   servingSize: z.string().optional(),
   prepTime: z.number().optional(), // minutes
@@ -28,12 +30,22 @@ const createMealPlanSchema = z.object({
   name: z.string().min(1),
   startDate: z.string(),
   endDate: z.string(),
-  meals: z.array(z.object({
-    mealId: z.string(),
-    dayOfWeek: z.enum(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]),
-    mealType: z.enum(["Breakfast", "Lunch", "Dinner", "Snack"]),
-    date: z.string().optional(),
-  })),
+  meals: z.array(
+    z.object({
+      mealId: z.string(),
+      dayOfWeek: z.enum([
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ]),
+      mealType: z.enum(["Breakfast", "Lunch", "Dinner", "Snack"]),
+      date: z.string().optional(),
+    })
+  ),
   notes: z.string().optional(),
 });
 
@@ -90,10 +102,7 @@ app.get("/", async (c) => {
 
     const meals = await db.meal.findMany({
       where,
-      orderBy: [
-        { mealType: "asc" },
-        { name: "asc" },
-      ],
+      orderBy: [{ mealType: "asc" }, { name: "asc" }],
     });
 
     return c.json({
@@ -312,10 +321,7 @@ app.get("/plans/:id", async (c) => {
           include: {
             meal: true,
           },
-          orderBy: [
-            { dayOfWeek: "asc" },
-            { mealType: "asc" },
-          ],
+          orderBy: [{ dayOfWeek: "asc" }, { mealType: "asc" }],
         },
       },
     });
@@ -403,10 +409,7 @@ app.get("/plans/current/:schoolId", async (c) => {
           include: {
             meal: true,
           },
-          orderBy: [
-            { dayOfWeek: "asc" },
-            { mealType: "asc" },
-          ],
+          orderBy: [{ dayOfWeek: "asc" }, { mealType: "asc" }],
         },
       },
     });
@@ -523,7 +526,8 @@ app.get("/statistics/:schoolId", async (c) => {
     // Average cost
     const costsWithValue = meals.filter((m: any) => m.cost !== null);
     const avgCost =
-      costsWithValue.reduce((sum: number, m: any) => sum + (m.cost || 0), 0) / costsWithValue.length || 0;
+      costsWithValue.reduce((sum: number, m: any) => sum + (m.cost || 0), 0) /
+        costsWithValue.length || 0;
 
     // Common allergens
     const allergenCount: any = {};

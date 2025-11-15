@@ -3,6 +3,7 @@
 Comprehensive testing documentation for the School Management System.
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Testing Stack](#testing-stack)
 3. [Running Tests](#running-tests)
@@ -19,6 +20,7 @@ Comprehensive testing documentation for the School Management System.
 ## Overview
 
 The School Management System uses a comprehensive testing approach covering:
+
 - **Unit Tests** - API routes, utility functions, calculations
 - **Component Tests** - React components, UI interactions
 - **Integration Tests** - End-to-end workflows
@@ -125,26 +127,26 @@ Runs only tests matching the pattern.
 ### Test Structure Example
 
 ```typescript
-import { describe, it, expect, beforeEach } from '@jest/globals'
+import { describe, it, expect, beforeEach } from "@jest/globals";
 
-describe('Feature Name', () => {
+describe("Feature Name", () => {
   beforeEach(() => {
     // Setup before each test
-  })
+  });
 
-  describe('Specific Functionality', () => {
-    it('should do something specific', () => {
+  describe("Specific Functionality", () => {
+    it("should do something specific", () => {
       // Arrange
-      const input = 'test'
+      const input = "test";
 
       // Act
-      const result = someFunction(input)
+      const result = someFunction(input);
 
       // Assert
-      expect(result).toBe('expected')
-    })
-  })
-})
+      expect(result).toBe("expected");
+    });
+  });
+});
 ```
 
 ---
@@ -154,6 +156,7 @@ describe('Feature Name', () => {
 ### CBC Report Cards API (`__tests__/api/cbc.test.ts`)
 
 **Coverage:**
+
 - Assessment creation and updates
 - Report card generation
 - Competency level validation
@@ -161,6 +164,7 @@ describe('Feature Name', () => {
 - Academic year and term validation
 
 **Key Tests:**
+
 ```typescript
 ✓ Should create a new assessment
 ✓ Should update existing assessment
@@ -171,18 +175,20 @@ describe('Feature Name', () => {
 ```
 
 **Example:**
-```typescript
-it('should validate competency levels', () => {
-  const validLevels = ['Exceeds', 'Meets', 'Approaches', 'Below']
-  const testLevel = 'Meets'
 
-  expect(validLevels).toContain(testLevel)
-})
+```typescript
+it("should validate competency levels", () => {
+  const validLevels = ["Exceeds", "Meets", "Approaches", "Below"];
+  const testLevel = "Meets";
+
+  expect(validLevels).toContain(testLevel);
+});
 ```
 
 ### Gradebook API (`__tests__/api/gradebook.test.ts`)
 
 **Coverage:**
+
 - Subject creation and management
 - Grade entry and validation
 - Score limits enforcement
@@ -191,6 +197,7 @@ it('should validate competency levels', () => {
 - Class performance reports
 
 **Key Tests:**
+
 ```typescript
 ✓ Should create a new subject
 ✓ Should prevent duplicate subject codes
@@ -204,6 +211,7 @@ it('should validate competency levels', () => {
 ### Timetable API (`__tests__/api/timetable.test.ts`)
 
 **Coverage:**
+
 - Timetable slot creation
 - **Conflict detection** (teacher, class, room)
 - Time validation
@@ -212,6 +220,7 @@ it('should validate competency levels', () => {
 - Timetable grouping by day
 
 **Key Tests:**
+
 ```typescript
 ✓ Should detect teacher conflicts
 ✓ Should detect class conflicts
@@ -222,20 +231,22 @@ it('should validate competency levels', () => {
 ```
 
 **Conflict Detection Logic:**
+
 ```typescript
 function hasTimeOverlap(start1, end1, start2, end2) {
-  const s1 = timeToMinutes(start1)
-  const e1 = timeToMinutes(end1)
-  const s2 = timeToMinutes(start2)
-  const e2 = timeToMinutes(end2)
+  const s1 = timeToMinutes(start1);
+  const e1 = timeToMinutes(end1);
+  const s2 = timeToMinutes(start2);
+  const e2 = timeToMinutes(end2);
 
-  return s1 < e2 && e1 > s2
+  return s1 < e2 && e1 > s2;
 }
 ```
 
 ### Admissions API (`__tests__/api/admissions.test.ts`)
 
 **Coverage:**
+
 - Application submission
 - Application number generation
 - Approval workflow
@@ -246,6 +257,7 @@ function hasTimeOverlap(start1, end1, start2, end2) {
 - Statistics calculation
 
 **Key Tests:**
+
 ```typescript
 ✓ Should create a new admission application
 ✓ Should generate sequential application numbers
@@ -259,6 +271,7 @@ function hasTimeOverlap(start1, end1, start2, end2) {
 ### Events API (`__tests__/api/events.test.ts`)
 
 **Coverage:**
+
 - Event type validation
 - Date and time format validation
 - Calendar grouping
@@ -267,6 +280,7 @@ function hasTimeOverlap(start1, end1, start2, end2) {
 - Bulk event creation
 
 **Key Tests:**
+
 ```typescript
 ✓ Should validate event types
 ✓ Should validate date format
@@ -282,6 +296,7 @@ function hasTimeOverlap(start1, end1, start2, end2) {
 ### Gradebook Component (`__tests__/components/gradebook.test.tsx`)
 
 **Coverage:**
+
 - Student list rendering
 - Search functionality
 - Term selection
@@ -290,6 +305,7 @@ function hasTimeOverlap(start1, end1, start2, end2) {
 - Color coding
 
 **Key Tests:**
+
 ```typescript
 ✓ Should render students table
 ✓ Should display student information
@@ -302,6 +318,7 @@ function hasTimeOverlap(start1, end1, start2, end2) {
 ```
 
 **Testing User Interactions:**
+
 ```typescript
 it('should filter students by search term', async () => {
   render(<MockGradebook />)
@@ -362,15 +379,15 @@ Run `npm run test:coverage` to generate detailed report.
 
 **Expected Coverage by Module:**
 
-| Module | Target | Status |
-|--------|--------|--------|
-| CBC API | >80% | ✅ |
-| Gradebook API | >80% | ✅ |
-| Timetable API | >85% | ✅ |
-| Admissions API | >80% | ✅ |
-| Events API | >75% | ✅ |
-| Components | >70% | 🟡 Partial |
-| Utils | >90% | ⏳ Pending |
+| Module         | Target | Status     |
+| -------------- | ------ | ---------- |
+| CBC API        | >80%   | ✅         |
+| Gradebook API  | >80%   | ✅         |
+| Timetable API  | >85%   | ✅         |
+| Admissions API | >80%   | ✅         |
+| Events API     | >75%   | ✅         |
+| Components     | >70%   | 🟡 Partial |
+| Utils          | >90%   | ⏳ Pending |
 
 ### Viewing Coverage Report
 
@@ -388,8 +405,9 @@ open coverage/lcov-report/index.html
 ### 1. API Route Tests
 
 **Template:**
+
 ```typescript
-import { describe, it, expect, beforeEach, jest } from '@jest/globals'
+import { describe, it, expect, beforeEach, jest } from "@jest/globals";
 
 const mockPrismaClient = {
   model: {
@@ -397,34 +415,35 @@ const mockPrismaClient = {
     findMany: jest.fn(),
     // ... other methods
   },
-}
+};
 
-jest.mock('@/lib/db', () => ({
+jest.mock("@/lib/db", () => ({
   db: mockPrismaClient,
-}))
+}));
 
-describe('API Route Name', () => {
+describe("API Route Name", () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
-  describe('POST /api/endpoint', () => {
-    it('should create a resource', async () => {
-      const mockData = { id: '1', name: 'Test' }
+  describe("POST /api/endpoint", () => {
+    it("should create a resource", async () => {
+      const mockData = { id: "1", name: "Test" };
 
-      mockPrismaClient.model.create.mockResolvedValue(mockData)
+      mockPrismaClient.model.create.mockResolvedValue(mockData);
 
-      const result = mockData
+      const result = mockData;
 
-      expect(result).toMatchObject({ id: '1', name: 'Test' })
-    })
-  })
-})
+      expect(result).toMatchObject({ id: "1", name: "Test" });
+    });
+  });
+});
 ```
 
 ### 2. Component Tests
 
 **Template:**
+
 ```typescript
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
@@ -450,25 +469,26 @@ describe('ComponentName', () => {
 ### 3. Utility Function Tests
 
 **Template:**
+
 ```typescript
-import { describe, it, expect } from '@jest/globals'
-import { utilityFunction } from '@/lib/utils'
+import { describe, it, expect } from "@jest/globals";
+import { utilityFunction } from "@/lib/utils";
 
-describe('utilityFunction', () => {
-  it('should return expected result', () => {
-    const input = 'test'
-    const expected = 'TEST'
+describe("utilityFunction", () => {
+  it("should return expected result", () => {
+    const input = "test";
+    const expected = "TEST";
 
-    const result = utilityFunction(input)
+    const result = utilityFunction(input);
 
-    expect(result).toBe(expected)
-  })
+    expect(result).toBe(expected);
+  });
 
-  it('should handle edge cases', () => {
-    expect(utilityFunction('')).toBe('')
-    expect(utilityFunction(null)).toBe(null)
-  })
-})
+  it("should handle edge cases", () => {
+    expect(utilityFunction("")).toBe("");
+    expect(utilityFunction(null)).toBe(null);
+  });
+});
 ```
 
 ---
@@ -480,29 +500,31 @@ describe('utilityFunction', () => {
 Each test should be independent and not rely on other tests.
 
 ❌ **Bad:**
+
 ```typescript
-let sharedData
+let sharedData;
 
-it('test 1', () => {
-  sharedData = { value: 1 }
-})
+it("test 1", () => {
+  sharedData = { value: 1 };
+});
 
-it('test 2', () => {
-  expect(sharedData.value).toBe(1) // Depends on test 1
-})
+it("test 2", () => {
+  expect(sharedData.value).toBe(1); // Depends on test 1
+});
 ```
 
 ✅ **Good:**
-```typescript
-it('test 1', () => {
-  const data = { value: 1 }
-  expect(data.value).toBe(1)
-})
 
-it('test 2', () => {
-  const data = { value: 1 }
-  expect(data.value).toBe(1)
-})
+```typescript
+it("test 1", () => {
+  const data = { value: 1 };
+  expect(data.value).toBe(1);
+});
+
+it("test 2", () => {
+  const data = { value: 1 };
+  expect(data.value).toBe(1);
+});
 ```
 
 ### 2. Clear Test Names
@@ -510,11 +532,13 @@ it('test 2', () => {
 Use descriptive test names that explain what is being tested.
 
 ❌ **Bad:**
+
 ```typescript
 it('works', () => { ... })
 ```
 
 ✅ **Good:**
+
 ```typescript
 it('should calculate student average correctly', () => { ... })
 ```
@@ -522,66 +546,66 @@ it('should calculate student average correctly', () => { ... })
 ### 3. Arrange-Act-Assert Pattern
 
 ```typescript
-it('should add two numbers', () => {
+it("should add two numbers", () => {
   // Arrange
-  const a = 5
-  const b = 3
+  const a = 5;
+  const b = 3;
 
   // Act
-  const result = add(a, b)
+  const result = add(a, b);
 
   // Assert
-  expect(result).toBe(8)
-})
+  expect(result).toBe(8);
+});
 ```
 
 ### 4. Test Edge Cases
 
 ```typescript
-describe('divide', () => {
-  it('should divide two numbers', () => {
-    expect(divide(10, 2)).toBe(5)
-  })
+describe("divide", () => {
+  it("should divide two numbers", () => {
+    expect(divide(10, 2)).toBe(5);
+  });
 
-  it('should handle division by zero', () => {
-    expect(divide(10, 0)).toBe(Infinity)
-  })
+  it("should handle division by zero", () => {
+    expect(divide(10, 0)).toBe(Infinity);
+  });
 
-  it('should handle negative numbers', () => {
-    expect(divide(-10, 2)).toBe(-5)
-  })
-})
+  it("should handle negative numbers", () => {
+    expect(divide(-10, 2)).toBe(-5);
+  });
+});
 ```
 
 ### 5. Mock External Dependencies
 
 ```typescript
 // Mock fetch
-global.fetch = jest.fn()
+global.fetch = jest.fn();
 
 // Mock Prisma
-jest.mock('@/lib/db', () => ({
+jest.mock("@/lib/db", () => ({
   db: mockPrismaClient,
-}))
+}));
 
 // Mock Next.js router
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter: () => ({
     push: jest.fn(),
   }),
-}))
+}));
 ```
 
 ### 6. Clean Up After Tests
 
 ```typescript
 afterEach(() => {
-  jest.clearAllMocks()
-})
+  jest.clearAllMocks();
+});
 
 afterAll(() => {
-  jest.restoreAllMocks()
-})
+  jest.restoreAllMocks();
+});
 ```
 
 ---
@@ -603,7 +627,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - run: npm install
       - run: npm run test:ci
@@ -626,10 +650,11 @@ Solution: Ensure `moduleNameMapper` in `jest.config.js` is correct.
 **2. "TextEncoder is not defined"**
 
 Solution: Add polyfill in `jest.setup.js`:
+
 ```javascript
-import { TextEncoder, TextDecoder } from 'util'
-global.TextEncoder = TextEncoder
-global.TextDecoder = TextDecoder
+import { TextEncoder, TextDecoder } from "util";
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
 ```
 
 **3. "window is not defined"**
@@ -639,8 +664,9 @@ Solution: Use `jest-environment-jsdom` for component tests.
 **4. Tests timeout**
 
 Solution: Increase timeout:
+
 ```typescript
-jest.setTimeout(10000) // 10 seconds
+jest.setTimeout(10000); // 10 seconds
 ```
 
 ---
@@ -667,6 +693,7 @@ jest.setTimeout(10000) // 10 seconds
 **Total Tests:** 50+ tests across 6 test files
 
 **To run all tests:**
+
 ```bash
 npm test
 ```

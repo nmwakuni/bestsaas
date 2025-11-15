@@ -99,9 +99,7 @@ export default function GradebookPage() {
     if (!selectedAssignment) return;
 
     try {
-      const response = await fetch(
-        `/api/students?classId=${selectedAssignment.class.id}`
-      );
+      const response = await fetch(`/api/students?classId=${selectedAssignment.class.id}`);
       const data = await response.json();
 
       if (data.success) {
@@ -176,10 +174,7 @@ export default function GradebookPage() {
     const studentGrades = getStudentGrades(studentId);
     if (studentGrades.length === 0) return "-";
 
-    const total = studentGrades.reduce(
-      (sum, g) => sum + (g.score / g.maxScore) * 100,
-      0
-    );
+    const total = studentGrades.reduce((sum, g) => sum + (g.score / g.maxScore) * 100, 0);
     return (total / studentGrades.length).toFixed(1) + "%";
   };
 
@@ -198,33 +193,31 @@ export default function GradebookPage() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Gradebook</h1>
+        <h1 className="mb-2 text-3xl font-bold">Gradebook</h1>
         <p className="text-gray-600">Manage grades and assessments for your classes</p>
       </div>
 
       {/* Subject/Class Selector */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         {assignments.map((assignment) => (
           <Card
             key={assignment.id}
             className={`cursor-pointer transition-all ${
               selectedAssignment?.id === assignment.id
-                ? "ring-2 ring-blue-500 bg-blue-50"
+                ? "bg-blue-50 ring-2 ring-blue-500"
                 : "hover:shadow-md"
             }`}
             onClick={() => setSelectedAssignment(assignment)}
           >
             <div className="p-4">
-              <h3 className="font-semibold text-lg">{assignment.subject.name}</h3>
+              <h3 className="text-lg font-semibold">{assignment.subject.name}</h3>
               <p className="text-sm text-gray-600">
                 {assignment.class.name}
                 {assignment.class.stream && ` ${assignment.class.stream}`}
               </p>
-              <p className="text-xs text-gray-500 mt-2">
-                {assignment._count.students} students
-              </p>
+              <p className="mt-2 text-xs text-gray-500">{assignment._count.students} students</p>
             </div>
           </Card>
         ))}
@@ -262,51 +255,51 @@ export default function GradebookPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                       Admission No.
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                       Student Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                       Assessments
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                       Average
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 bg-white">
                   {filteredStudents.map((student) => {
                     const studentGrades = getStudentGrades(student.id);
                     return (
                       <tr key={student.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
                           {student.admissionNumber}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                           {student.firstName} {student.lastName}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
                           {studentGrades.length} assessment(s)
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm">
                           <span
                             className={`font-semibold ${
                               parseFloat(calculateAverage(student.id)) >= 75
                                 ? "text-green-600"
                                 : parseFloat(calculateAverage(student.id)) >= 50
-                                ? "text-yellow-600"
-                                : "text-red-600"
+                                  ? "text-yellow-600"
+                                  : "text-red-600"
                             }`}
                           >
                             {calculateAverage(student.id)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm">
                           <Button
                             size="sm"
                             onClick={() => {
@@ -326,17 +319,17 @@ export default function GradebookPage() {
           </Card>
 
           {/* Class Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
             <Card>
               <div className="p-4">
                 <h3 className="text-sm font-medium text-gray-500">Total Students</h3>
-                <p className="text-2xl font-bold mt-1">{students.length}</p>
+                <p className="mt-1 text-2xl font-bold">{students.length}</p>
               </div>
             </Card>
             <Card>
               <div className="p-4">
                 <h3 className="text-sm font-medium text-gray-500">Graded Students</h3>
-                <p className="text-2xl font-bold mt-1">
+                <p className="mt-1 text-2xl font-bold">
                   {new Set(grades.map((g) => g.student.id)).size}
                 </p>
               </div>
@@ -344,7 +337,7 @@ export default function GradebookPage() {
             <Card>
               <div className="p-4">
                 <h3 className="text-sm font-medium text-gray-500">Total Assessments</h3>
-                <p className="text-2xl font-bold mt-1">{grades.length}</p>
+                <p className="mt-1 text-2xl font-bold">{grades.length}</p>
               </div>
             </Card>
           </div>
@@ -359,13 +352,11 @@ export default function GradebookPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Assessment Type</label>
+            <label className="mb-1 block text-sm font-medium">Assessment Type</label>
             <select
               value={gradeForm.assessmentType}
-              onChange={(e) =>
-                setGradeForm({ ...gradeForm, assessmentType: e.target.value })
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              onChange={(e) => setGradeForm({ ...gradeForm, assessmentType: e.target.value })}
+              className="w-full rounded-md border border-gray-300 px-3 py-2"
             >
               <option value="Assignment">Assignment</option>
               <option value="CAT">CAT</option>
@@ -378,7 +369,7 @@ export default function GradebookPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Score</label>
+              <label className="mb-1 block text-sm font-medium">Score</label>
               <Input
                 type="number"
                 value={gradeForm.score}
@@ -388,7 +379,7 @@ export default function GradebookPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Max Score</label>
+              <label className="mb-1 block text-sm font-medium">Max Score</label>
               <Input
                 type="number"
                 value={gradeForm.maxScore}
@@ -400,11 +391,11 @@ export default function GradebookPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Comment (Optional)</label>
+            <label className="mb-1 block text-sm font-medium">Comment (Optional)</label>
             <textarea
               value={gradeForm.comment}
               onChange={(e) => setGradeForm({ ...gradeForm, comment: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full rounded-md border border-gray-300 px-3 py-2"
               rows={3}
               placeholder="Good performance, keep it up..."
             />

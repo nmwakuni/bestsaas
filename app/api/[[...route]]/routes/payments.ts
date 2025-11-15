@@ -105,49 +105,46 @@ app.get("/stats", async (c) => {
       return c.json({ error: "schoolId is required" }, 400);
     }
 
-    const [totalCollected, todayCollected, weekCollected, monthCollected] =
-      await Promise.all([
-        // Total collected
-        db.payment.aggregate({
-          where: { schoolId, status: "COMPLETED" },
-          _sum: { amount: true },
-        }),
-        // Today
-        db.payment.aggregate({
-          where: {
-            schoolId,
-            status: "COMPLETED",
-            createdAt: {
-              gte: new Date(new Date().setHours(0, 0, 0, 0)),
-            },
+    const [totalCollected, todayCollected, weekCollected, monthCollected] = await Promise.all([
+      // Total collected
+      db.payment.aggregate({
+        where: { schoolId, status: "COMPLETED" },
+        _sum: { amount: true },
+      }),
+      // Today
+      db.payment.aggregate({
+        where: {
+          schoolId,
+          status: "COMPLETED",
+          createdAt: {
+            gte: new Date(new Date().setHours(0, 0, 0, 0)),
           },
-          _sum: { amount: true },
-        }),
-        // This week
-        db.payment.aggregate({
-          where: {
-            schoolId,
-            status: "COMPLETED",
-            createdAt: {
-              gte: new Date(
-                new Date().setDate(new Date().getDate() - 7)
-              ),
-            },
+        },
+        _sum: { amount: true },
+      }),
+      // This week
+      db.payment.aggregate({
+        where: {
+          schoolId,
+          status: "COMPLETED",
+          createdAt: {
+            gte: new Date(new Date().setDate(new Date().getDate() - 7)),
           },
-          _sum: { amount: true },
-        }),
-        // This month
-        db.payment.aggregate({
-          where: {
-            schoolId,
-            status: "COMPLETED",
-            createdAt: {
-              gte: new Date(new Date().setDate(1)),
-            },
+        },
+        _sum: { amount: true },
+      }),
+      // This month
+      db.payment.aggregate({
+        where: {
+          schoolId,
+          status: "COMPLETED",
+          createdAt: {
+            gte: new Date(new Date().setDate(1)),
           },
-          _sum: { amount: true },
-        }),
-      ]);
+        },
+        _sum: { amount: true },
+      }),
+    ]);
 
     return c.json({
       totalCollected: totalCollected._sum.amount || 0,

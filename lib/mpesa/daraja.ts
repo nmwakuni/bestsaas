@@ -62,9 +62,9 @@ class DarajaAPI {
     }
 
     try {
-      const auth = Buffer.from(
-        `${this.config.consumerKey}:${this.config.consumerSecret}`
-      ).toString("base64");
+      const auth = Buffer.from(`${this.config.consumerKey}:${this.config.consumerSecret}`).toString(
+        "base64"
+      );
 
       const response = await axios.get(
         `${this.baseUrl}/oauth/v1/generate?grant_type=client_credentials`,
@@ -138,9 +138,7 @@ class DarajaAPI {
       return response.data;
     } catch (error: any) {
       console.error("STK Push error:", error.response?.data || error.message);
-      throw new Error(
-        error.response?.data?.errorMessage || "STK Push failed"
-      );
+      throw new Error(error.response?.data?.errorMessage || "STK Push failed");
     }
   }
 
@@ -159,16 +157,12 @@ class DarajaAPI {
         CheckoutRequestID: checkoutRequestID,
       };
 
-      const response = await axios.post(
-        `${this.baseUrl}/mpesa/stkpushquery/v1/query`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${this.baseUrl}/mpesa/stkpushquery/v1/query`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       return response.data;
     } catch (error: any) {
@@ -180,10 +174,7 @@ class DarajaAPI {
   /**
    * Register C2B URLs (for Paybill/Till number payments)
    */
-  async registerC2BUrls(
-    validationUrl: string,
-    confirmationUrl: string
-  ): Promise<any> {
+  async registerC2BUrls(validationUrl: string, confirmationUrl: string): Promise<any> {
     try {
       const token = await this.getAccessToken();
 
@@ -194,16 +185,12 @@ class DarajaAPI {
         ValidationURL: validationUrl,
       };
 
-      const response = await axios.post(
-        `${this.baseUrl}/mpesa/c2b/v1/registerurl`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${this.baseUrl}/mpesa/c2b/v1/registerurl`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       return response.data;
     } catch (error: any) {
@@ -215,11 +202,7 @@ class DarajaAPI {
   /**
    * B2C (Business to Customer) - For refunds
    */
-  async b2cPayment(
-    phoneNumber: string,
-    amount: number,
-    remarks: string
-  ): Promise<any> {
+  async b2cPayment(phoneNumber: string, amount: number, remarks: string): Promise<any> {
     try {
       const token = await this.getAccessToken();
 
@@ -238,16 +221,12 @@ class DarajaAPI {
         Occasion: remarks,
       };
 
-      const response = await axios.post(
-        `${this.baseUrl}/mpesa/b2c/v1/paymentrequest`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${this.baseUrl}/mpesa/b2c/v1/paymentrequest`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       return response.data;
     } catch (error: any) {

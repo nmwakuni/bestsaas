@@ -121,10 +121,7 @@ class AfricasTalkingService {
   /**
    * Send general announcement
    */
-  async sendAnnouncement(
-    recipients: string[],
-    announcement: string
-  ): Promise<SMSResponse> {
+  async sendAnnouncement(recipients: string[], announcement: string): Promise<SMSResponse> {
     return this.sendSMS({
       to: recipients,
       message: announcement,
@@ -138,24 +135,21 @@ class AfricasTalkingService {
   async sendWhatsApp(options: WhatsAppOptions): Promise<any> {
     try {
       // WhatsApp uses a different endpoint
-      const response = await fetch(
-        `${this.baseUrl}/messaging/whatsapp/send`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            apiKey: this.apiKey,
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            username: this.username,
-            recipients: options.to.map((to) => ({
-              phoneNumber: to,
-              message: options.message,
-            })),
-          }),
-        }
-      );
+      const response = await fetch(`${this.baseUrl}/messaging/whatsapp/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apiKey: this.apiKey,
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          username: this.username,
+          recipients: options.to.map((to) => ({
+            phoneNumber: to,
+            message: options.message,
+          })),
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -203,16 +197,13 @@ class AfricasTalkingService {
    */
   async getBalance(): Promise<any> {
     try {
-      const response = await fetch(
-        `${this.baseUrl}/user?username=${this.username}`,
-        {
-          method: "GET",
-          headers: {
-            apiKey: this.apiKey,
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${this.baseUrl}/user?username=${this.username}`, {
+        method: "GET",
+        headers: {
+          apiKey: this.apiKey,
+          Accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

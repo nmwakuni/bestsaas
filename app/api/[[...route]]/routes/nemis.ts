@@ -52,13 +52,16 @@ app.get("/enrollment/:schoolId", async (c) => {
     });
 
     // Group by class and gender
-    const enrollmentByClass: Record<string, {
-      total: number;
-      male: number;
-      female: number;
-      boarders: number;
-      dayScholars: number;
-    }> = {};
+    const enrollmentByClass: Record<
+      string,
+      {
+        total: number;
+        male: number;
+        female: number;
+        boarders: number;
+        dayScholars: number;
+      }
+    > = {};
     const genderStats: Record<string, number> = { Male: 0, Female: 0, Other: 0 };
     const ageDistribution: Record<number, number> = {};
 
@@ -76,7 +79,7 @@ app.get("/enrollment/:schoolId", async (c) => {
       }
 
       enrollmentByClass[className].total++;
-      enrollmentByClass[className][student.gender.toLowerCase() as 'male' | 'female']++;
+      enrollmentByClass[className][student.gender.toLowerCase() as "male" | "female"]++;
 
       if (student.boardingStatus === "Boarder") {
         enrollmentByClass[className].boarders++;
@@ -266,18 +269,24 @@ app.get("/academic-performance/:schoolId", async (c) => {
     });
 
     // Calculate performance by subject
-    const subjectPerformance: Record<string, {
-      total: number;
-      sum: number;
-      high: number;
-      low: number;
-      average?: number;
-    }> = {};
-    const classPerformance: Record<string, {
-      total: number;
-      sum: number;
-      average?: number;
-    }> = {};
+    const subjectPerformance: Record<
+      string,
+      {
+        total: number;
+        sum: number;
+        high: number;
+        low: number;
+        average?: number;
+      }
+    > = {};
+    const classPerformance: Record<
+      string,
+      {
+        total: number;
+        sum: number;
+        average?: number;
+      }
+    > = {};
 
     grades.forEach((grade: any) => {
       const subjectName = grade.subject.name;
@@ -349,10 +358,7 @@ app.get("/academic-performance/:schoolId", async (c) => {
     });
   } catch (error) {
     console.error("Error generating academic performance report:", error);
-    return c.json(
-      { success: false, error: "Failed to generate academic performance report" },
-      500
-    );
+    return c.json({ success: false, error: "Failed to generate academic performance report" }, 500);
   }
 });
 
@@ -409,8 +415,8 @@ app.get("/infrastructure/:schoolId", async (c) => {
         classroomsInUse: rooms.length,
         totalStudents: school.classes.reduce((sum: number, c: any) => sum + c.students.length, 0),
         averageClassSize:
-          school.classes.reduce((sum: number, c: any) => sum + c.students.length, 0) / school.classes.length ||
-          0,
+          school.classes.reduce((sum: number, c: any) => sum + c.students.length, 0) /
+            school.classes.length || 0,
         rooms: rooms,
         // Additional fields can be added as needed
         hasLibrary: false, // These would come from school metadata
@@ -461,7 +467,10 @@ app.post("/generate", async (c) => {
 
       case "academic_performance":
         if (!term) {
-          return c.json({ success: false, error: "Term is required for academic performance report" }, 400);
+          return c.json(
+            { success: false, error: "Term is required for academic performance report" },
+            400
+          );
         }
         const performanceResponse = await fetch(
           `${c.req.url.replace("/generate", "")}/academic-performance/${schoolId}?academicYear=${academicYear}&term=${term}`
@@ -514,7 +523,8 @@ app.get("/export/:schoolId/:reportType", async (c) => {
       });
 
       // CSV Header
-      csvData = "Admission Number,First Name,Last Name,Gender,Date of Birth,Class,Boarding Status\n";
+      csvData =
+        "Admission Number,First Name,Last Name,Gender,Date of Birth,Class,Boarding Status\n";
 
       // CSV Rows
       students.forEach((student: any) => {
@@ -622,7 +632,8 @@ app.get("/compliance/:schoolId", async (c) => {
     if (!compliance.hasSubCountyInfo) issues.push("Missing sub-county information");
     if (!compliance.hasEnrollmentData) issues.push("No student enrollment data");
     if (!compliance.hasTeacherData) issues.push("No teacher data");
-    if (compliance.studentTeacherRatio > 40) issues.push("Student-teacher ratio exceeds recommended 1:40");
+    if (compliance.studentTeacherRatio > 40)
+      issues.push("Student-teacher ratio exceeds recommended 1:40");
 
     return c.json({
       success: true,

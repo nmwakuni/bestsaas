@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ReactNode, HTMLAttributes } from "react";
 
-interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
+interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "className"> {
   children: ReactNode;
   className?: string;
   padding?: "none" | "sm" | "md" | "lg";
@@ -18,9 +18,9 @@ export function Card({ children, className, padding = "md", onClick, ...props }:
   return (
     <div
       className={cn(
-        "bg-white rounded-xl shadow-md",
+        "rounded-xl bg-white shadow-md",
         paddingStyles[padding],
-        onClick && "cursor-pointer hover:shadow-lg transition-shadow",
+        onClick && "cursor-pointer transition-shadow hover:shadow-lg",
         className
       )}
       onClick={onClick}
@@ -37,11 +37,7 @@ interface CardHeaderProps {
 }
 
 export function CardHeader({ children, className }: CardHeaderProps) {
-  return (
-    <div className={cn("mb-4", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("mb-4", className)}>{children}</div>;
 }
 
 interface CardTitleProps {
@@ -50,11 +46,7 @@ interface CardTitleProps {
 }
 
 export function CardTitle({ children, className }: CardTitleProps) {
-  return (
-    <h3 className={cn("text-lg font-semibold text-gray-900", className)}>
-      {children}
-    </h3>
-  );
+  return <h3 className={cn("text-lg font-semibold text-gray-900", className)}>{children}</h3>;
 }
 
 interface CardContentProps {

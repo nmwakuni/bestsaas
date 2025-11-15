@@ -3,11 +3,13 @@
 Complete API reference for the School Management System.
 
 ## Base URL
+
 ```
 http://localhost:3000/api
 ```
 
 ## Authentication
+
 All endpoints require authentication via Better Auth. Include the session token in your requests.
 
 ---
@@ -15,11 +17,13 @@ All endpoints require authentication via Better Auth. Include the session token 
 ## CBC Report Cards API
 
 ### Generate Report Card
+
 **POST** `/cbc/report-cards/generate`
 
 Generate a CBC (Competency-Based Curriculum) report card for a student.
 
 **Request Body:**
+
 ```json
 {
   "studentId": "string",
@@ -38,6 +42,7 @@ Generate a CBC (Competency-Based Curriculum) report card for a student.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -52,11 +57,13 @@ Generate a CBC (Competency-Based Curriculum) report card for a student.
 ```
 
 ### Create/Update Assessment
+
 **POST** `/cbc/assessments`
 
 Create or update a subject assessment for a student.
 
 **Request Body:**
+
 ```json
 {
   "studentId": "string",
@@ -71,16 +78,19 @@ Create or update a subject assessment for a student.
 ```
 
 ### Get Student Assessments
+
 **GET** `/cbc/assessments/:studentId?academicYear=2024&term=1`
 
 Retrieve all assessments for a student.
 
 ### Bulk Create Assessments
+
 **POST** `/cbc/assessments/bulk`
 
 Create multiple assessments at once.
 
 **Request Body:**
+
 ```json
 {
   "assessments": [
@@ -97,6 +107,7 @@ Create multiple assessments at once.
 ```
 
 ### Download Report Card PDF
+
 **GET** `/cbc/report-cards/:id/pdf`
 
 Download report card as PDF. Returns a PDF file.
@@ -106,9 +117,11 @@ Download report card as PDF. Returns a PDF file.
 ## Gradebook API
 
 ### Create Subject
+
 **POST** `/gradebook/subjects`
 
 **Request Body:**
+
 ```json
 {
   "name": "Mathematics",
@@ -119,12 +132,15 @@ Download report card as PDF. Returns a PDF file.
 ```
 
 ### Get All Subjects
+
 **GET** `/gradebook/subjects?schoolId=school_1`
 
 ### Assign Teacher to Subject
+
 **POST** `/gradebook/assign-teacher`
 
 **Request Body:**
+
 ```json
 {
   "subjectId": "subject_1",
@@ -134,9 +150,11 @@ Download report card as PDF. Returns a PDF file.
 ```
 
 ### Create Grade
+
 **POST** `/gradebook/grades`
 
 **Request Body:**
+
 ```json
 {
   "studentId": "student_1",
@@ -155,11 +173,13 @@ Download report card as PDF. Returns a PDF file.
 **Assessment Types:** `Assignment`, `CAT`, `MidTerm`, `EndTerm`, `Project`, `Homework`
 
 ### Bulk Create Grades
+
 **POST** `/gradebook/grades/bulk`
 
 Create multiple grades at once.
 
 **Request Body:**
+
 ```json
 {
   "grades": [
@@ -179,9 +199,11 @@ Create multiple grades at once.
 ```
 
 ### Get Grades
+
 **GET** `/gradebook/grades?studentId=student_1&subjectId=math&term=1`
 
 Query parameters:
+
 - `studentId` - Filter by student
 - `subjectId` - Filter by subject
 - `classId` - Filter by class
@@ -189,11 +211,13 @@ Query parameters:
 - `term` - Filter by term (1, 2, or 3)
 
 ### Get Student Report
+
 **GET** `/gradebook/student-report/:studentId?academicYear=2024&term=1`
 
 Get comprehensive grade report for a student with averages and statistics.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -216,6 +240,7 @@ Get comprehensive grade report for a student with averages and statistics.
 ```
 
 ### Get Class Report
+
 **GET** `/gradebook/class-report/:classId?subjectId=math&academicYear=2024&term=1`
 
 Get class performance statistics.
@@ -225,9 +250,11 @@ Get class performance statistics.
 ## Events & Calendar API
 
 ### Create Event
+
 **POST** `/events`
 
 **Request Body:**
+
 ```json
 {
   "title": "Mid Term Exams",
@@ -248,9 +275,11 @@ Get class performance statistics.
 **Event Types:** `Academic`, `Sports`, `Meeting`, `Holiday`, `Extracurricular`, `Exam`, `Trip`, `Other`
 
 ### Get Events
+
 **GET** `/events?schoolId=school_1&eventType=Exam&month=5&year=2024`
 
 Query parameters:
+
 - `schoolId` - Required
 - `eventType` - Filter by event type
 - `startDate` & `endDate` - Filter by date range
@@ -258,6 +287,7 @@ Query parameters:
 - `classId` - Filter by class
 
 ### Get Calendar View
+
 **GET** `/events/calendar/:schoolId/:year/:month`
 
 Get all events for a specific month with grouping by date.
@@ -265,16 +295,19 @@ Get all events for a specific month with grouping by date.
 **Example:** `/events/calendar/school_1/2024/5`
 
 ### Get Upcoming Events
+
 **GET** `/events/upcoming/:schoolId?limit=10`
 
 Get upcoming events sorted by start date.
 
 ### Bulk Create Events
+
 **POST** `/events/bulk`
 
 Create multiple events at once (useful for term dates).
 
 **Request Body:**
+
 ```json
 {
   "events": [
@@ -294,11 +327,13 @@ Create multiple events at once (useful for term dates).
 ## Timetable API
 
 ### Create Timetable Slot
+
 **POST** `/timetable/slots`
 
 Create a timetable slot with automatic conflict detection.
 
 **Request Body:**
+
 ```json
 {
   "classId": "class_1",
@@ -316,6 +351,7 @@ Create a timetable slot with automatic conflict detection.
 **Days of Week:** `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`
 
 **Response (Success):**
+
 ```json
 {
   "success": true,
@@ -324,6 +360,7 @@ Create a timetable slot with automatic conflict detection.
 ```
 
 **Response (Conflict):**
+
 ```json
 {
   "success": false,
@@ -339,6 +376,7 @@ Create a timetable slot with automatic conflict detection.
 ```
 
 ### Check Conflicts
+
 **POST** `/timetable/check-conflicts`
 
 Check for conflicts without creating a slot.
@@ -346,11 +384,13 @@ Check for conflicts without creating a slot.
 **Request Body:** Same as create slot
 
 ### Get Class Timetable
+
 **GET** `/timetable/class/:classId?academicYear=2024&term=1`
 
 Get full timetable for a class grouped by day.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -365,16 +405,19 @@ Get full timetable for a class grouped by day.
 ```
 
 ### Get Teacher Timetable
+
 **GET** `/timetable/teacher/:teacherId?academicYear=2024&term=1`
 
 Get teacher's teaching schedule.
 
 ### Bulk Create Slots
+
 **POST** `/timetable/slots/bulk`
 
 Create multiple timetable slots with conflict checking.
 
 ### Delete Class Timetable
+
 **DELETE** `/timetable/class/:classId?academicYear=2024&term=1`
 
 Delete all slots for a class (useful for resetting timetable).
@@ -384,11 +427,13 @@ Delete all slots for a class (useful for resetting timetable).
 ## Admissions API
 
 ### Submit Application
+
 **POST** `/admissions`
 
 Submit a new admission application.
 
 **Request Body:**
+
 ```json
 {
   "schoolId": "school_1",
@@ -412,6 +457,7 @@ Submit a new admission application.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -425,9 +471,11 @@ Submit a new admission application.
 ```
 
 ### Get Admissions
+
 **GET** `/admissions?schoolId=school_1&status=Pending&academicYear=2024`
 
 Query parameters:
+
 - `schoolId` - Required
 - `status` - Filter by status
 - `academicYear` - Filter by year
@@ -436,16 +484,19 @@ Query parameters:
 **Statuses:** `Pending`, `UnderReview`, `Approved`, `Rejected`, `Waitlisted`
 
 ### Get Application by Number
+
 **GET** `/admissions/number/:applicationNumber`
 
 Track application by application number.
 
 ### Approve Application
+
 **POST** `/admissions/:id/approve`
 
 Approve application and create student record.
 
 **Request Body:**
+
 ```json
 {
   "classId": "class_1",
@@ -455,6 +506,7 @@ Approve application and create student record.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -469,9 +521,11 @@ Approve application and create student record.
 ```
 
 ### Reject Application
+
 **POST** `/admissions/:id/reject`
 
 **Request Body:**
+
 ```json
 {
   "reviewNotes": "Currently at capacity",
@@ -480,9 +534,11 @@ Approve application and create student record.
 ```
 
 ### Schedule Interview
+
 **POST** `/admissions/:id/schedule-interview`
 
 **Request Body:**
+
 ```json
 {
   "interviewDate": "2024-05-20",
@@ -492,11 +548,13 @@ Approve application and create student record.
 ```
 
 ### Bulk Update Status
+
 **POST** `/admissions/bulk-status`
 
 Update status for multiple applications.
 
 **Request Body:**
+
 ```json
 {
   "admissionIds": ["adm_1", "adm_2", "adm_3"],
@@ -506,6 +564,7 @@ Update status for multiple applications.
 ```
 
 ### Get Statistics
+
 **GET** `/admissions/statistics/:schoolId?academicYear=2024`
 
 Get admission statistics by status, class, and month.
@@ -515,9 +574,11 @@ Get admission statistics by status, class, and month.
 ## Meal Planning API
 
 ### Create Meal
+
 **POST** `/meals`
 
 **Request Body:**
+
 ```json
 {
   "name": "Ugali and Beef Stew",
@@ -541,14 +602,17 @@ Get admission statistics by status, class, and month.
 **Meal Types:** `Breakfast`, `Lunch`, `Dinner`, `Snack`
 
 ### Get Meals
+
 **GET** `/meals?schoolId=school_1&mealType=Lunch&search=ugali`
 
 ### Create Meal Plan
+
 **POST** `/meals/plans`
 
 Create a weekly meal plan.
 
 **Request Body:**
+
 ```json
 {
   "schoolId": "school_1",
@@ -573,11 +637,13 @@ Create a weekly meal plan.
 ```
 
 ### Get Current Meal Plan
+
 **GET** `/meals/plans/current/:schoolId`
 
 Get the active meal plan for the current week.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -599,6 +665,7 @@ Get the active meal plan for the current week.
 ```
 
 ### Get Meal Statistics
+
 **GET** `/meals/statistics/:schoolId`
 
 Get statistics on meals (average cost, allergen counts, etc.).
@@ -610,11 +677,13 @@ Get statistics on meals (average cost, allergen counts, etc.).
 **NEMIS** = National Education Management Information System (Kenya Government)
 
 ### Generate Enrollment Report
+
 **GET** `/nemis/enrollment/:schoolId?academicYear=2024`
 
 Generate NEMIS-compliant enrollment report.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -643,26 +712,31 @@ Generate NEMIS-compliant enrollment report.
 ```
 
 ### Generate Teachers Report
+
 **GET** `/nemis/teachers/:schoolId`
 
 Generate teacher staffing report.
 
 ### Generate Academic Performance Report
+
 **GET** `/nemis/academic-performance/:schoolId?academicYear=2024&term=1`
 
 Generate performance statistics by subject and class.
 
 ### Generate Infrastructure Report
+
 **GET** `/nemis/infrastructure/:schoolId`
 
 Generate report on school infrastructure and resources.
 
 ### Check NEMIS Compliance
+
 **GET** `/nemis/compliance/:schoolId`
 
 Check if school data is NEMIS-compliant.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -681,6 +755,7 @@ Check if school data is NEMIS-compliant.
 ```
 
 ### Export Report as CSV
+
 **GET** `/nemis/export/:schoolId/:reportType?academicYear=2024`
 
 Export report as CSV file.
@@ -705,6 +780,7 @@ All endpoints return errors in this format:
 ```
 
 **Common HTTP Status Codes:**
+
 - `200` - Success
 - `400` - Bad Request (validation error)
 - `404` - Not Found
@@ -715,6 +791,7 @@ All endpoints return errors in this format:
 ## Rate Limiting
 
 No rate limiting is currently implemented. Recommended for production:
+
 - 100 requests per minute for authenticated users
 - 10 requests per minute for unauthenticated endpoints
 
@@ -723,6 +800,7 @@ No rate limiting is currently implemented. Recommended for production:
 ## Webhooks (Future)
 
 Planned webhook events:
+
 - `admission.approved` - When admission is approved
 - `grade.created` - When new grade is added
 - `report_card.generated` - When CBC report card is generated
@@ -745,6 +823,7 @@ For API issues, please contact: tech@school.example.com
 ## Changelog
 
 ### v1.0.0 (2024-11-15)
+
 - Initial release
 - CBC Report Cards API
 - Gradebook API

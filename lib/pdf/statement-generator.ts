@@ -49,12 +49,7 @@ export function generateStatement(data: StatementData): jsPDF {
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.text(data.school.address, 105, 22, { align: "center" });
-  doc.text(
-    `Tel: ${data.school.phone} | Email: ${data.school.email}`,
-    105,
-    27,
-    { align: "center" }
-  );
+  doc.text(`Tel: ${data.school.phone} | Email: ${data.school.email}`, 105, 27, { align: "center" });
 
   // Statement Title
   doc.setFontSize(14);
@@ -84,9 +79,7 @@ export function generateStatement(data: StatementData): jsPDF {
   doc.text("Student:", 15, y);
   doc.setFont("helvetica", "normal");
   doc.text(
-    `${data.student.firstName} ${data.student.middleName || ""} ${
-      data.student.lastName
-    }`,
+    `${data.student.firstName} ${data.student.middleName || ""} ${data.student.lastName}`,
     60,
     y
   );
@@ -201,12 +194,9 @@ export function generateStatement(data: StatementData): jsPDF {
     { align: "center" }
   );
 
-  doc.text(
-    `Generated on: ${new Date().toLocaleDateString()}`,
-    105,
-    footerY + 10,
-    { align: "center" }
-  );
+  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, footerY + 10, {
+    align: "center",
+  });
 
   return doc;
 }
@@ -215,9 +205,7 @@ export function downloadStatement(data: StatementData, filename?: string): void 
   const doc = generateStatement(data);
   const name =
     filename ||
-    `Statement_${data.student.admissionNumber}_${
-      new Date().toISOString().split("T")[0]
-    }.pdf`;
+    `Statement_${data.student.admissionNumber}_${new Date().toISOString().split("T")[0]}.pdf`;
   doc.save(name);
 }
 

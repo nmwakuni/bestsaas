@@ -42,6 +42,7 @@ Before you begin, make sure you have:
    - Copy **Passkey**: (long string)
 
 **For Production:**
+
 - Contact Safaricom to get production credentials
 - Fill out their forms and wait for approval
 
@@ -61,6 +62,7 @@ Before you begin, make sure you have:
 ### 2.1 Clone or Download the Project
 
 If you have the code:
+
 ```bash
 cd school-management-system
 ```
@@ -78,6 +80,7 @@ This will install all required packages (Next.js, Prisma, etc.)
 ### 2.3 Set Up Environment Variables
 
 1. Copy the example environment file:
+
 ```bash
 cp .env.example .env
 ```
@@ -112,6 +115,7 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
 **To generate BETTER_AUTH_SECRET:**
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
@@ -141,6 +145,7 @@ npm run db:seed
 ```
 
 This adds:
+
 - 1 demo school
 - 2 classes
 - 2 students
@@ -157,6 +162,7 @@ npm run dev
 ```
 
 You should see:
+
 ```
 ✓ Ready on http://localhost:3000
 ```
@@ -174,6 +180,7 @@ You should see the landing page!
 Go to: [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
 
 You should see:
+
 - Student count
 - Fee collection stats
 - Payment overview
@@ -209,6 +216,7 @@ npm run db:studio
 This opens Prisma Studio at [http://localhost:5555](http://localhost:5555)
 
 You can:
+
 - View all data
 - Add/edit records
 - See relationships
@@ -218,6 +226,7 @@ You can:
 ### 6.1 Deploy to Vercel
 
 1. Push your code to GitHub:
+
 ```bash
 git init
 git add .
@@ -259,6 +268,7 @@ git push -u origin main
 **Error:** `Can't reach database server`
 
 **Solution:**
+
 - Check your `DATABASE_URL` is correct
 - Make sure Neon project is active
 - Check your internet connection
@@ -268,6 +278,7 @@ git push -u origin main
 **Error:** `Invalid Access Token`
 
 **Solution:**
+
 - Check Consumer Key and Secret are correct
 - Make sure there are no extra spaces
 - Try regenerating credentials in Daraja portal
@@ -275,6 +286,7 @@ git push -u origin main
 **Error:** `Bad Request - Invalid PhoneNumber`
 
 **Solution:**
+
 - Phone number must be in format: `254XXXXXXXXX`
 - Remove any spaces, dashes, or +
 
@@ -283,6 +295,7 @@ git push -u origin main
 **Error:** `Module not found`
 
 **Solution:**
+
 ```bash
 rm -rf node_modules
 rm package-lock.json
@@ -294,6 +307,7 @@ npm install
 **Error:** `Port 3000 is already in use`
 
 **Solution:**
+
 ```bash
 # Kill process on port 3000
 npx kill-port 3000

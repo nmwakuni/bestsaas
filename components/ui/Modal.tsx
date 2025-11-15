@@ -52,24 +52,14 @@ export function Modal({
         />
 
         {/* Modal */}
-        <div
-          className={cn(
-            "relative bg-white rounded-xl shadow-xl w-full",
-            sizes[size]
-          )}
-        >
+        <div className={cn("relative w-full rounded-xl bg-white shadow-xl", sizes[size])}>
           {/* Header */}
           {(title || showCloseButton) && (
-            <div className="flex items-center justify-between p-6 border-b">
-              {title && (
-                <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
-              )}
+            <div className="flex items-center justify-between border-b p-6">
+              {title && <h2 className="text-xl font-semibold text-gray-900">{title}</h2>}
               {showCloseButton && (
-                <button
-                  onClick={onClose}
-                  className="text-gray-400 hover:text-gray-600 transition"
-                >
-                  <X className="w-6 h-6" />
+                <button onClick={onClose} className="text-gray-400 transition hover:text-gray-600">
+                  <X className="h-6 w-6" />
                 </button>
               )}
             </div>

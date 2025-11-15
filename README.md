@@ -5,6 +5,7 @@ A modern, full-stack School Management System built specifically for Kenyan scho
 ## 🚀 Features
 
 ### Core Features (Phase 1) ✅
+
 - ✅ **Student Management** - Complete student records with parent information
 - ✅ **Fee Management** - Fee structures, records, and collection tracking
 - ✅ **M-Pesa Integration** - STK Push and C2B payments via Safaricom Daraja API
@@ -15,6 +16,7 @@ A modern, full-stack School Management System built specifically for Kenyan scho
 - ✅ **PDF Generation** - Fee receipts and statements
 
 ### Advanced Features (Phase 2) ✅
+
 - ✅ **CBC Report Cards** - Kenya Competency-Based Curriculum compliant reports
 - ✅ **Gradebook System** - Grade entry, analytics, and performance tracking
 - ✅ **Events & Calendar** - School events management with calendar views
@@ -24,6 +26,7 @@ A modern, full-stack School Management System built specifically for Kenyan scho
 - ✅ **NEMIS Integration** - Kenya government reporting and compliance checks
 
 ### Coming Soon
+
 - 📱 Parent mobile app (React Native)
 - 🏥 Student health records
 - 📚 Library management
@@ -33,18 +36,21 @@ A modern, full-stack School Management System built specifically for Kenyan scho
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Next.js 15** (App Router)
 - **TypeScript**
 - **Tailwind CSS**
 - **Lucide Icons**
 
 ### Backend
+
 - **Hono** (API framework)
 - **Better Auth** (Authentication)
 - **Prisma** (ORM)
 - **Neon** (PostgreSQL database)
 
 ### Integrations
+
 - **Safaricom Daraja API** (M-Pesa payments)
 - **Africa's Talking** (SMS/WhatsApp)
 
@@ -223,6 +229,7 @@ See `prisma/schema.prisma` for full schema.
 For complete API documentation, see [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)
 
 ### Core APIs
+
 - **Students** - Student CRUD operations
 - **Fees** - Fee structures and records management
 - **Payments** - Payment tracking and reconciliation
@@ -231,6 +238,7 @@ For complete API documentation, see [docs/API_DOCUMENTATION.md](docs/API_DOCUMEN
 - **Dashboard** - Analytics and statistics
 
 ### Academic APIs (New!)
+
 - **CBC Reports** - `/api/cbc/*` - Competency-based report cards
 - **Gradebook** - `/api/gradebook/*` - Grades, subjects, teacher assignments
 - **Events** - `/api/events/*` - School events and calendar
@@ -304,6 +312,7 @@ MIT License
 ## 🙋‍♂️ Support
 
 For issues and questions:
+
 - Check the [documentation](#)
 - Open an issue on GitHub
 - Contact support (TODO)
@@ -311,6 +320,7 @@ For issues and questions:
 ## 🗺️ Roadmap
 
 ### Phase 1 (MVP) ✅ COMPLETED
+
 - ✅ Student management
 - ✅ Fee management
 - ✅ M-Pesa integration
@@ -321,6 +331,7 @@ For issues and questions:
 - ✅ Dashboard and basic reporting
 
 ### Phase 2 (Academic Features) ✅ COMPLETED
+
 - ✅ CBC Report Card system (Kenya curriculum)
 - ✅ Gradebook & grading system
 - ✅ Events & calendar management
@@ -330,6 +341,7 @@ For issues and questions:
 - ✅ NEMIS integration (Kenya government reporting)
 
 ### Phase 3 (Mobile & Advanced Features) 🚧 IN PROGRESS
+
 - 📱 Parent mobile app (React Native)
 - 📊 Advanced analytics and insights
 - 📚 Library management
@@ -339,6 +351,7 @@ For issues and questions:
 - 📝 Attendance tracking (biometric support)
 
 ### Phase 4 (AI & Automation) 🔮 PLANNED
+
 - 🤖 AI-powered academic predictions
 - 💬 Chatbot for parents (WhatsApp)
 - 📈 Automated performance insights
