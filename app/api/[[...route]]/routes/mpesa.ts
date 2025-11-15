@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { getDarajaAPI } from "@/lib/mpesa/daraja";
 import { parseSTKCallback, getMpesaResultMessage } from "@/lib/mpesa/types";
 import { formatPhoneNumber, generateReceiptNumber } from "@/lib/utils";
+import { getAfricasTalkingService } from "@/lib/messaging/africas-talking";
 import type { STKCallback } from "@/lib/mpesa/types";
 
 const app = new Hono();
@@ -136,7 +137,38 @@ app.post("/callback", async (c) => {
         }
       });
 
-      // TODO: Send SMS receipt to parent
+      // Send SMS receipt to parent
+      try {
+        const student = await db.student.findUnique({
+          where: { id: payment.studentId },
+          include: {
+            parents: true,
+            feeRecords: {
+              where: { id: payment.feeRecordId || undefined },
+            },
+          },
+        });
+
+        if (student && student.parents.length > 0) {
+          const parent = student.parents[0];
+          const feeRecord = student.feeRecords[0];
+          const at = getAfricasTalkingService();
+
+          await at.sendPaymentConfirmation(
+            parent.phone,
+            `${student.firstName} ${student.lastName}`,
+            Number(payment.amount),
+            payment.receiptNumber,
+            Number(feeRecord?.balance || 0)
+          );
+
+          console.log("Payment SMS sent to:", parent.phone);
+        }
+      } catch (smsError: any) {
+        console.error("Failed to send payment SMS:", smsError.message);
+        // Don't fail the whole callback if SMS fails
+      }
+
       console.log("Payment successful:", parsed.mpesaReceiptNumber);
     } else {
       // Payment failed

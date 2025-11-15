@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { db } from "@/lib/db";
+import { getAfricasTalkingService } from "@/lib/messaging/africas-talking";
 
 const app = new Hono();
 
@@ -9,12 +10,26 @@ app.post("/send", async (c) => {
     const body = await c.req.json();
     const { schoolId, recipients, message, channel, sentBy } = body;
 
-    // TODO: Implement Africa's Talking integration
-    // For now, just create message records
+    const at = getAfricasTalkingService();
+    const phoneNumbers = recipients.map((r: any) => r.phone);
 
+    // Send via Africa's Talking
+    let response;
+    if (channel === "SMS") {
+      response = await at.sendBulkSMS(phoneNumbers, message);
+    } else if (channel === "WHATSAPP") {
+      response = await at.sendWhatsApp({
+        to: phoneNumbers,
+        message,
+      });
+    }
+
+    // Create message records in database
     const messages = await Promise.all(
-      recipients.map((recipient: any) =>
-        db.message.create({
+      recipients.map((recipient: any, index: number) => {
+        const atRecipient = response?.SMSMessageData?.Recipients?.[index];
+
+        return db.message.create({
           data: {
             schoolId,
             recipient: recipient.phone,
@@ -22,11 +37,13 @@ app.post("/send", async (c) => {
             recipientId: recipient.id,
             message,
             channel,
-            status: "SENT", // Should be PENDING until actually sent
+            status: atRecipient?.statusCode === 101 ? "SENT" : "FAILED",
+            externalId: atRecipient?.messageId,
+            errorMessage: atRecipient?.status,
             sentBy,
           },
-        })
-      )
+        });
+      })
     );
 
     return c.json({
@@ -35,6 +52,7 @@ app.post("/send", async (c) => {
       messages,
     });
   } catch (error: any) {
+    console.error("Error sending messages:", error);
     return c.json({ error: error.message }, 500);
   }
 });
@@ -65,33 +83,64 @@ app.post("/fee-reminders", async (c) => {
       },
     });
 
+    const at = getAfricasTalkingService();
     const messages = [];
+    const phoneNumbers: string[] = [];
+    const messageMap = new Map<string, any>();
 
+    // Collect all recipients
     for (const record of defaulters) {
       const student = record.student;
-      const parent = student.parents[0]; // Get first parent
+      const parent = student.parents[0];
 
       if (!parent) continue;
 
-      const messageText = `Dear Parent, ${student.firstName} ${student.lastName} (${student.admissionNumber}) has a pending fee balance of KES ${record.balance}. Please clear to avoid inconvenience. Thank you.`;
-
-      const message = await db.message.create({
-        data: {
-          schoolId,
-          recipient: parent.phone,
-          recipientType: "PARENT",
-          recipientId: parent.id,
-          message: messageText,
-          channel: "SMS",
-          status: "PENDING",
-          sentBy,
-        },
+      phoneNumbers.push(parent.phone);
+      messageMap.set(parent.phone, {
+        student,
+        parent,
+        record,
       });
-
-      messages.push(message);
     }
 
-    // TODO: Actually send the messages via Africa's Talking
+    // Send SMS via Africa's Talking in bulk
+    if (phoneNumbers.length > 0) {
+      try {
+        for (const [phone, data] of messageMap.entries()) {
+          const { student, parent, record } = data;
+
+          // Send individual SMS for personalized messages
+          const response = await at.sendFeeReminder(
+            parent.phone,
+            `${student.firstName} ${student.lastName}`,
+            student.admissionNumber,
+            Number(record.balance)
+          );
+
+          const atRecipient = response?.SMSMessageData?.Recipients?.[0];
+
+          // Create message record
+          const message = await db.message.create({
+            data: {
+              schoolId,
+              recipient: parent.phone,
+              recipientType: "PARENT",
+              recipientId: parent.id,
+              message: `Dear Parent, ${student.firstName} ${student.lastName} (${student.admissionNumber}) has a pending fee balance of KES ${record.balance}. Please clear to avoid inconvenience. Thank you.`,
+              channel: "SMS",
+              status: atRecipient?.statusCode === 101 ? "SENT" : "FAILED",
+              externalId: atRecipient?.messageId,
+              errorMessage: atRecipient?.status,
+              sentBy,
+            },
+          });
+
+          messages.push(message);
+        }
+      } catch (error: any) {
+        console.error("Error sending fee reminders:", error);
+      }
+    }
 
     return c.json({
       success: true,

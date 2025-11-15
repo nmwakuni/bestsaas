@@ -9,6 +9,7 @@ import paymentsRouter from "./routes/payments";
 import mpesaRouter from "./routes/mpesa";
 import messagesRouter from "./routes/messages";
 import dashboardRouter from "./routes/dashboard";
+import parentRouter from "./routes/parent";
 
 export const runtime = "nodejs";
 
@@ -34,6 +35,7 @@ app.route("/payments", paymentsRouter);
 app.route("/mpesa", mpesaRouter);
 app.route("/messages", messagesRouter);
 app.route("/dashboard", dashboardRouter);
+app.route("/parent", parentRouter);
 
 // Error handling
 app.onError((err, c) => {
