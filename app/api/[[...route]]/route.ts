@@ -12,6 +12,13 @@ import dashboardRouter from "./routes/dashboard";
 import parentRouter from "./routes/parent";
 import importRouter from "./routes/import";
 import pdfRouter from "./routes/pdf";
+import cbcRouter from "./routes/cbc";
+import gradebookRouter from "./routes/gradebook";
+import eventsRouter from "./routes/events";
+import timetableRouter from "./routes/timetable";
+import admissionsRouter from "./routes/admissions";
+import mealsRouter from "./routes/meals";
+import nemisRouter from "./routes/nemis";
 
 export const runtime = "nodejs";
 
@@ -40,6 +47,13 @@ app.route("/dashboard", dashboardRouter);
 app.route("/parent", parentRouter);
 app.route("/import", importRouter);
 app.route("/pdf", pdfRouter);
+app.route("/cbc", cbcRouter);
+app.route("/gradebook", gradebookRouter);
+app.route("/events", eventsRouter);
+app.route("/timetable", timetableRouter);
+app.route("/admissions", admissionsRouter);
+app.route("/meals", mealsRouter);
+app.route("/nemis", nemisRouter);
 
 // Error handling
 app.onError((err, c) => {
