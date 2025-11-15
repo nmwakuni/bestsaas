@@ -4,21 +4,31 @@ A modern, full-stack School Management System built specifically for Kenyan scho
 
 ## 🚀 Features
 
-### Core Features (MVP)
+### Core Features (Phase 1) ✅
 - ✅ **Student Management** - Complete student records with parent information
 - ✅ **Fee Management** - Fee structures, records, and collection tracking
 - ✅ **M-Pesa Integration** - STK Push and C2B payments via Safaricom Daraja API
 - ✅ **Payment Processing** - Auto-reconciliation, receipts, and payment history
-- ✅ **Parent Communication** - SMS and WhatsApp notifications
-- ✅ **Dashboard & Reports** - Real-time analytics and insights
-- ✅ **Multi-tenant** - Support for multiple schools
+- ✅ **Parent Portal** - OTP authentication, fee viewing, payment history
+- ✅ **SMS/WhatsApp Integration** - Automated notifications and bulk messaging
+- ✅ **Bulk Import** - CSV/Excel student import with auto-admission numbers
+- ✅ **PDF Generation** - Fee receipts and statements
+
+### Advanced Features (Phase 2) ✅
+- ✅ **CBC Report Cards** - Kenya Competency-Based Curriculum compliant reports
+- ✅ **Gradebook System** - Grade entry, analytics, and performance tracking
+- ✅ **Events & Calendar** - School events management with calendar views
+- ✅ **Timetable Builder** - Automated conflict detection for classes, teachers, and rooms
+- ✅ **Online Admissions** - Application workflow with approval and auto-student creation
+- ✅ **Meal Planning** - Weekly menu management for boarding schools
+- ✅ **NEMIS Integration** - Kenya government reporting and compliance checks
 
 ### Coming Soon
-- 📚 Academic management (grades, report cards, CBC support)
-- 👨‍🏫 Teacher management and timetables
-- 📊 Advanced reporting and analytics
-- 📱 Parent mobile app
+- 📱 Parent mobile app (React Native)
 - 🏥 Student health records
+- 📚 Library management
+- 🚌 Transport management
+- 💼 Staff payroll integration
 
 ## 🛠️ Tech Stack
 
@@ -210,40 +220,26 @@ See `prisma/schema.prisma` for full schema.
 
 ## 🔑 API Endpoints
 
-### Students
-- `GET /api/students` - List students
-- `GET /api/students/:id` - Get student details
-- `POST /api/students` - Create student
-- `PATCH /api/students/:id` - Update student
-- `DELETE /api/students/:id` - Delete student
+For complete API documentation, see [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)
 
-### Fees
-- `GET /api/fees/structures` - Get fee structures
-- `POST /api/fees/structures` - Create fee structure
-- `POST /api/fees/generate-records` - Generate fee records
-- `GET /api/fees/records` - Get fee records
-- `GET /api/fees/defaulters` - Get fee defaulters
+### Core APIs
+- **Students** - Student CRUD operations
+- **Fees** - Fee structures and records management
+- **Payments** - Payment tracking and reconciliation
+- **M-Pesa** - STK Push, C2B, callbacks
+- **Messages** - SMS/WhatsApp bulk messaging
+- **Dashboard** - Analytics and statistics
 
-### Payments
-- `GET /api/payments` - List payments
-- `POST /api/payments` - Record manual payment
-- `GET /api/payments/stats` - Payment statistics
+### Academic APIs (New!)
+- **CBC Reports** - `/api/cbc/*` - Competency-based report cards
+- **Gradebook** - `/api/gradebook/*` - Grades, subjects, teacher assignments
+- **Events** - `/api/events/*` - School events and calendar
+- **Timetable** - `/api/timetable/*` - Automated scheduling with conflict detection
+- **Admissions** - `/api/admissions/*` - Online application workflow
+- **Meals** - `/api/meals/*` - Meal planning for boarding schools
+- **NEMIS** - `/api/nemis/*` - Kenya government reporting
 
-### M-Pesa
-- `POST /api/mpesa/stk-push` - Initiate STK Push
-- `POST /api/mpesa/callback` - M-Pesa callback (webhook)
-- `POST /api/mpesa/c2b/validation` - C2B validation
-- `POST /api/mpesa/c2b/confirmation` - C2B confirmation
-
-### Messages
-- `POST /api/messages/send` - Send bulk messages
-- `POST /api/messages/fee-reminders` - Send fee reminders
-- `GET /api/messages` - Message history
-
-### Dashboard
-- `GET /api/dashboard/stats` - Dashboard statistics
-- `GET /api/dashboard/activities` - Recent activities
-- `GET /api/dashboard/payment-trends` - Payment trends
+Total: **80+ API endpoints** across 14 route groups
 
 ## 🧪 Testing M-Pesa
 
@@ -314,29 +310,41 @@ For issues and questions:
 
 ## 🗺️ Roadmap
 
-### Phase 1 (MVP) ✅
-- Student management
-- Fee management
-- M-Pesa integration
-- Basic reporting
+### Phase 1 (MVP) ✅ COMPLETED
+- ✅ Student management
+- ✅ Fee management
+- ✅ M-Pesa integration
+- ✅ Parent portal with OTP auth
+- ✅ SMS/WhatsApp integration
+- ✅ PDF generation (receipts, statements)
+- ✅ Bulk student import
+- ✅ Dashboard and basic reporting
 
-### Phase 2 (In Progress)
-- Academic management (grades, CBC)
-- Teacher management
-- Attendance tracking
-- Advanced reports
+### Phase 2 (Academic Features) ✅ COMPLETED
+- ✅ CBC Report Card system (Kenya curriculum)
+- ✅ Gradebook & grading system
+- ✅ Events & calendar management
+- ✅ Timetable builder with conflict detection
+- ✅ Online admissions workflow
+- ✅ Meal planning for boarding schools
+- ✅ NEMIS integration (Kenya government reporting)
 
-### Phase 3 (Planned)
-- Parent mobile app
-- SMS/WhatsApp integration
-- Multi-campus support
-- Custom branding
+### Phase 3 (Mobile & Advanced Features) 🚧 IN PROGRESS
+- 📱 Parent mobile app (React Native)
+- 📊 Advanced analytics and insights
+- 📚 Library management
+- 🏥 Student health records
+- 🚌 Transport & route management
+- 💼 Staff payroll integration
+- 📝 Attendance tracking (biometric support)
 
-### Phase 4 (Future)
-- AI-powered insights
-- Mobile app for teachers
-- Integration with NEMIS
-- Multi-language support
+### Phase 4 (AI & Automation) 🔮 PLANNED
+- 🤖 AI-powered academic predictions
+- 💬 Chatbot for parents (WhatsApp)
+- 📈 Automated performance insights
+- 🌍 Multi-language support (English, Swahili)
+- 🎨 Custom school branding
+- 🔗 Integration marketplace
 
 ---
 
