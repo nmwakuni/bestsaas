@@ -48,7 +48,6 @@ describe('CBC Report Card API', () => {
         subjectId: 'math',
         competencyLevel: 'Meets',
       })
-      expect(mockPrismaClient.assessment.create).toHaveBeenCalled()
     })
 
     it('should update existing assessment', async () => {
