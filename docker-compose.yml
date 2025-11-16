@@ -1,26 +1,8 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Database
-  db:
-    image: postgres:16-alpine
-    container_name: school-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-school_management}
-    ports:
-      - "${DB_PORT:-5432}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   # Next.js Application
+  # Uses Neon PostgreSQL (cloud database)
   app:
     build:
       context: .
@@ -30,13 +12,29 @@ services:
     ports:
       - "${APP_PORT:-3000}:3000"
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-school_management}
+      # Neon database (provide your connection string)
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL_POOLED: ${DATABASE_URL_POOLED}
+
+      # Authentication
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
       BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+
+      # M-Pesa (optional)
+      MPESA_ENVIRONMENT: ${MPESA_ENVIRONMENT:-sandbox}
+      MPESA_CONSUMER_KEY: ${MPESA_CONSUMER_KEY}
+      MPESA_CONSUMER_SECRET: ${MPESA_CONSUMER_SECRET}
+      MPESA_BUSINESS_SHORT_CODE: ${MPESA_BUSINESS_SHORT_CODE}
+      MPESA_PASSKEY: ${MPESA_PASSKEY}
+      MPESA_CALLBACK_URL: ${MPESA_CALLBACK_URL}
+
+      # Africa's Talking SMS (optional)
+      AFRICAS_TALKING_API_KEY: ${AFRICAS_TALKING_API_KEY}
+      AFRICAS_TALKING_USERNAME: ${AFRICAS_TALKING_USERNAME}
+      AFRICAS_TALKING_SENDER_ID: ${AFRICAS_TALKING_SENDER_ID}
+
+      # Application
       NODE_ENV: production
-    depends_on:
-      db:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
       interval: 30s
@@ -44,6 +42,5 @@ services:
       retries: 3
       start_period: 40s
 
-volumes:
-  postgres_data:
-    driver: local
+# Note: PostgreSQL is provided by Neon (cloud database)
+# No need for local database container
