@@ -37,40 +37,66 @@ A modern, full-stack School Management System built specifically for Kenyan scho
 
 ### Frontend
 
-- **Next.js 15** (App Router)
-- **TypeScript**
-- **Tailwind CSS**
-- **Lucide Icons**
+- **Next.js 15** (App Router) with TypeScript
+- **Tailwind CSS** for styling
+- **Lucide Icons** for UI icons
+- **React Hook Form** + **Zod** for form validation
+- **TanStack Query** for data fetching
 
 ### Backend
 
-- **Hono** (API framework)
-- **Better Auth** (Authentication)
-- **Prisma** (ORM)
-- **Neon** (PostgreSQL database)
+- **Hono** - Fast, lightweight API framework
+- **Better Auth** - Modern authentication with session management
+- **Prisma ORM** - Type-safe database access
+- **Neon PostgreSQL** - Serverless database with auto-scaling
 
 ### Integrations
 
-- **Safaricom Daraja API** (M-Pesa payments)
-- **Africa's Talking** (SMS/WhatsApp)
+- **M-Pesa Daraja API** - Mobile money payments (Kenya)
+- **Africa's Talking** - SMS/WhatsApp notifications
+- **PDF Generation** - jsPDF & React-PDF for receipts/reports
+
+### DevOps
+
+- **Docker** - Containerization with multi-stage builds
+- **GitHub Actions** - CI/CD pipeline
+- **ESLint + Prettier** - Code quality and formatting
+- **Jest** - 76 comprehensive tests
 
 ## 📋 Prerequisites
 
-- Node.js 18+ and npm/yarn/pnpm
-- Neon database account (or any PostgreSQL database)
-- Safaricom Daraja API credentials
-- Africa's Talking account (for SMS/WhatsApp)
+- **Node.js 20+** and npm
+- **Neon** database account (free tier available) - [Get it here](https://console.neon.tech)
+- **M-Pesa** credentials (optional for payments) - [Developer portal](https://developer.safaricom.co.ke)
+- **Africa's Talking** account (optional for SMS) - [Sign up](https://africastalking.com)
 
 ## 🚀 Quick Start
 
-### 1. Clone the repository
+### Option 1: Automated Setup (Recommended)
+
+Run the interactive setup wizard:
 
 ```bash
-git clone <your-repo-url>
-cd school-management-system
+# Clone the repository
+git clone https://github.com/nmwakuni/bestsaas.git
+cd bestsaas
+
+# Run setup wizard
+chmod +x setup.sh
+./setup.sh
 ```
 
-### 2. Install dependencies
+The wizard will guide you through:
+- ✅ Database configuration (Neon)
+- ✅ Authentication setup (Better Auth)
+- ✅ M-Pesa integration (optional)
+- ✅ Dependencies installation
+- ✅ Database schema creation
+- ✅ Sample data seeding
+
+### Option 2: Manual Setup
+
+#### 1. Install dependencies
 
 ```bash
 npm install
